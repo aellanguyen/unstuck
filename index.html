@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unstuck</title>
+  <script>
+    const smallScreen = matchMedia('(max-width: 680px)').matches;
+    const landscapePhone = matchMedia('(max-width: 950px) and (pointer: coarse)').matches;
+    const edition = smallScreen || landscapePhone ? 'writer-phone.html' : 'writer-desktop.html';
+    location.replace(edition + location.search + location.hash);
+  </script>
+</head>
+<body>
+  <h1>Unstuck</h1>
+  <p>Open the <a href="writer-phone.html">phone view</a> or the <a href="writer-desktop.html">desktop view</a>.</p>
+</body>
+</html>
