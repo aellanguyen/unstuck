@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="en" data-edition="phone">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unstuck — Writer workspace</title>
+<style>
+:root{--paper:#f1f7fa;--white:#fff;--ink:#20272b;--muted:#53656f;--line:#a2b2bb;--blue:#d7ebf8;--strong:#285675;--red:#a73f2e;--radius:5px}
+*{box-sizing:border-box}body{margin:0;background:#e5edf2;color:var(--ink);font:16px/1.45 system-ui,sans-serif}button,input,textarea,select{font:inherit;color:inherit}button,select{cursor:pointer}button{border:1px solid var(--line);border-radius:var(--radius);background:white;padding:8px 12px}button:hover{background:#edf5fa}button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--strong);outline-offset:2px}button.primary{background:var(--blue);border-color:#779ab3;font-weight:650}button[aria-current=page]{background:var(--blue);border-color:#94bad3;font-weight:650}a{color:var(--strong)}h1,h2,h3,p{margin:0}h1{font-size:clamp(28px,4vw,41px);letter-spacing:-.045em;line-height:1.07}h2{font-size:19px;letter-spacing:-.02em}h3{font-size:16px}small,.muted{color:var(--muted)}.mono{font:12px ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.shell{min-height:100dvh;background:var(--paper)}.top{height:66px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px;gap:16px}.brand{font-size:22px;font-weight:800;letter-spacing:-.06em;display:flex;gap:10px;align-items:center;white-space:nowrap}.mark{width:25px;height:25px;border:1px solid var(--strong);background:var(--blue);border-radius:4px;display:grid;place-items:center;font:16px monospace}.top-project{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.edition{font-size:13px;white-space:nowrap}.layout{display:grid;grid-template-columns:215px minmax(0,1fr);min-height:calc(100dvh - 66px)}aside.nav{border-right:1px solid var(--line);padding:30px 15px;background:#f8fbfd}.nav .mono{padding-left:10px;margin-bottom:12px}.nav button{width:100%;text-align:left;margin:2px 0;border-color:transparent;background:transparent;display:flex;align-items:center;gap:10px;font-size:14px}.nav button[aria-current=page]{background:var(--blue);border-color:#94bad3}.nav button:hover{background:#e8f2f8}.nav-icon{width:18px;text-align:center;color:var(--strong)}main{min-width:0;padding:30px clamp(16px,3vw,42px) 36px}.crumb{margin-bottom:11px}.heading{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:23px}.heading p{margin-top:9px}.actions{display:flex;gap:7px;flex-wrap:wrap}.work{display:grid;grid-template-columns:minmax(0,1fr) 245px;gap:15px;align-items:start}.frame,.panel,.card{background:white;border:1px solid var(--line);border-radius:var(--radius);min-width:0}.frame{overflow:hidden}.bar,.foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;flex-wrap:wrap}.bar{border-bottom:1px solid var(--line)}.foot{border-top:1px solid var(--line)}.foot small{font-size:13px}.surface{height:clamp(355px,55vh,610px);position:relative;overflow:hidden;touch-action:none;background-color:#f7fbfd;background-image:radial-gradient(#9eb2bf 1px,transparent 1px);background-size:20px 20px;cursor:grab}.surface:active{cursor:grabbing}.surface canvas,.layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.node{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;min-width:104px;max-width:170px;text-align:left;box-shadow:2px 2px 0 #c7d4dc;line-height:1.25;background:#fff;cursor:grab}.node .mono{display:block;font-size:10px;margin-bottom:4px}.node strong{font-size:14px}.node.root{background:var(--blue);border-color:#7095ae}.node.selected{outline:2px solid #437290;outline-offset:2px}.node.note{background:#f9fbef;min-width:130px}.node.issue{background:#fbebe6;border-color:#b97061;color:var(--red);cursor:pointer}.node.issue .mono{color:var(--red)}.panel{padding:15px;display:grid;gap:12px}.panel hr{border:0;border-top:1px solid #dbe4e9;width:100%;margin:1px 0}.panel p{font-size:14px}.panel button{text-align:left}.status{font-size:13px;color:var(--muted)}.issue-text{color:var(--red)}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px}.card{display:grid;gap:11px;padding:16px;align-content:start}.card p{white-space:pre-wrap;overflow-wrap:anywhere}.fields{display:grid;gap:12px;max-width:720px}.fields label{display:grid;gap:6px;font-weight:600}input,textarea,select{max-width:100%;width:100%;background:white;border:1px solid var(--line);border-radius:4px;padding:9px 10px}textarea{min-height:100px;resize:vertical}dialog{width:min(460px,calc(100vw - 26px));max-height:90dvh;overflow:auto;border:1px solid var(--line);border-radius:5px;padding:20px;color:var(--ink)}dialog::backdrop{background:#25374450}dialog form{display:grid;gap:13px}dialog .actions{justify-content:end}.mobile-nav{display:none}.toast{position:fixed;bottom:16px;right:16px;background:#263d4b;color:white;padding:9px 14px;border-radius:4px;z-index:20;font-size:14px}.toast:empty{display:none}
+@media(max-width:1050px){.work{grid-template-columns:minmax(0,1fr)}}
+html[data-edition=phone] .shell{max-width:430px;margin:auto;box-shadow:0 0 0 1px var(--line)}
+@media(max-width:680px){
+.layout{display:block}.nav{display:none}.mobile-nav{display:grid;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fbfd}.mobile-nav select{font-size:15px}.top{height:53px;padding:0 14px}.top-project{display:none}main{padding:19px 13px 25px}.heading{align-items:start;flex-direction:column;margin-bottom:15px}.surface{height:365px}.node{min-width:78px;max-width:110px;padding:6px}.node strong{font-size:12px}.node .mono{font-size:9px}.node.note{min-width:93px}.toast{bottom:9px}
+}
+html[data-edition=phone] .layout{display:block}html[data-edition=phone] .nav{display:none}html[data-edition=phone] .mobile-nav{display:grid;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:#f8fbfd}
+html[data-edition=phone] .top{height:53px;padding:0 14px}html[data-edition=phone] .top-project{display:none}html[data-edition=phone] main{padding:19px 13px 25px}html[data-edition=phone] .heading{align-items:start;flex-direction:column;margin-bottom:15px}html[data-edition=phone] .work{grid-template-columns:minmax(0,1fr)}html[data-edition=phone] .surface{height:365px}html[data-edition=phone] .node{min-width:78px;max-width:110px;padding:6px}html[data-edition=phone] .node strong{font-size:12px}html[data-edition=phone] .node .mono{font-size:9px}html[data-edition=phone] .node.note{min-width:93px}
+
+/* The canvas covers the workspace. Navigation and tools sit above it. */
+.shell.canvas-mode{position:relative;height:100dvh;min-height:0;overflow:hidden;isolation:isolate}
+.canvas-mode .layout,.canvas-mode main{display:contents}
+.canvas-mode .surface{position:absolute;inset:0;height:auto;background-color:#f3f8fb}
+.canvas-mode .top,.canvas-mode .nav,.canvas-mode .mobile-nav,.canvas-mode .canvas-info,.canvas-mode .canvas-tools,.canvas-mode .canvas-details,.canvas-mode .canvas-hint{position:absolute;z-index:2;background:white;border:1px solid var(--line);border-radius:8px;box-shadow:0 2px 5px #263d4b15}
+.canvas-mode .top{top:12px;left:12px;right:12px;height:48px;padding:0 13px}
+.canvas-mode .nav{top:120px;left:12px;width:174px;max-height:calc(100% - 192px);overflow:auto;padding:9px}
+.canvas-mode .nav .mono{margin:3px 0 6px}
+.canvas-mode .nav button{min-height:35px;padding:6px 8px}
+.canvas-info{left:12px;top:70px;display:flex;align-items:center;gap:10px;padding:5px 9px}
+.canvas-info h1{font-size:17px;letter-spacing:-.02em}
+.canvas-info button,.canvas-tools button,.canvas-details>button{font-size:14px;padding:6px 9px}
+.canvas-tools{bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:5px;padding:5px;white-space:nowrap;max-width:calc(100% - 16px)}
+.canvas-tools .status{min-width:37px;text-align:center}
+.canvas-details{top:70px;right:12px;width:254px;max-height:calc(100% - 142px);overflow:auto;padding:6px}
+.canvas-details>button{width:100%;text-align:left}
+.canvas-details .panel{border:0;padding:10px 6px 6px;overflow-wrap:anywhere}
+.canvas-details.collapsed{width:auto}
+.canvas-details.collapsed .panel,.canvas-mode.nav-hidden .nav{display:none}
+.canvas-hint{left:12px;bottom:14px;padding:6px 9px;color:var(--muted);font-size:12px;pointer-events:none}
+.canvas-mode .surface[data-tool=rotate]{cursor:move}
+.canvas-mode .surface[data-tool=pan] .node{cursor:grab}
+@media(max-width:1000px){.canvas-hint{display:none}}
+@media(max-width:680px){
+  .canvas-mode .mobile-nav{display:block;left:8px;top:65px;width:min(170px,48%);padding:3px}
+  .canvas-mode .mobile-nav label,.canvas-info{display:none}
+  .canvas-mode .mobile-nav select{padding:6px 8px}
+  .canvas-mode .top{top:8px;left:8px;right:8px}
+  .canvas-mode .canvas-details{top:auto;right:8px;bottom:65px;width:min(340px,calc(100% - 16px));max-height:43dvh}
+  .canvas-mode .canvas-details.collapsed{width:auto}
+  .canvas-mode .canvas-tools{bottom:10px}
+}
+html[data-edition=phone] .canvas-mode .mobile-nav{display:block;left:8px;top:65px;width:min(170px,48%);padding:3px}
+html[data-edition=phone] .canvas-mode .mobile-nav label,html[data-edition=phone] .canvas-info,html[data-edition=phone] .canvas-hint{display:none}
+html[data-edition=phone] .canvas-mode .mobile-nav select{padding:6px 8px}
+html[data-edition=phone] .canvas-mode .top{top:8px;left:8px;right:8px}
+html[data-edition=phone] .canvas-mode .canvas-details{top:auto;right:8px;bottom:65px;width:min(340px,calc(100% - 16px));max-height:43dvh}
+html[data-edition=phone] .canvas-mode .canvas-details.collapsed{width:auto}
+html[data-edition=phone] .canvas-mode .canvas-tools{bottom:10px}
+
+.shell.canvas-mode .surface{width:100%;height:100%}
+.projects-mode .layout{display:block}
+.projects-mode .nav,.projects-mode .mobile-nav{display:none}
+.projects-mode main{max-width:1020px;margin:auto}
+.project-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+.project-cards .card{min-height:170px}
+.organize-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:start}
+.group{background:#e9f2f7;border:1px solid var(--line);border-radius:6px;padding:10px;display:grid;gap:8px;min-width:0}
+.group-head{display:flex;align-items:center;justify-content:space-between;gap:5px}
+.group-head h2{font-size:15px;overflow-wrap:anywhere}
+.group-head button{padding:3px 8px}
+.group .card{padding:9px;gap:6px;position:relative}
+.group h3,.group p{overflow-wrap:anywhere}
+.group p{font-size:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.group .actions button{font-size:13px;padding:4px 7px}
+.group .actions{gap:4px}
+.canvas-mode .node.beat{background:#e0edf7;border-color:#83a3b9}
+.canvas-mode .node.flag{background:#fff2d5;border-color:#ad9471}
+.canvas-mode .node.issue{background:#fae7e1;border-color:#b97061;cursor:grab}
+.canvas-mode .node:active{cursor:grabbing}
+.canvas-mode .node.alternate{background:#eee9fa;border-style:dashed}
+.canvas-mode .canvas-details.node-popup{top:0;left:0;right:auto;bottom:auto;width:min(275px,calc(100% - 20px));max-height:min(335px,calc(100% - 148px));overscroll-behavior:contain}
+
+.node-popup[hidden]{display:none}
+.analysis-badge{position:absolute;z-index:2;top:70px;right:12px;background:white;border:1px solid var(--line);border-radius:7px;padding:4px}
+.analysis-badge>span{display:block;padding:5px}
+.organize-popup{position:absolute;z-index:3;top:calc(100% + 4px);left:0;width:min(300px,100%);max-height:325px;overflow:auto;box-shadow:0 4px 12px #263d4b30}
+.organize-popup .card{border:1px solid var(--line)}
+@media(max-width:680px){
+  .analysis-badge{top:65px;right:8px}
+  .analysis-badge button{font-size:13px;padding:5px 8px}
+  .organize-popup{position:fixed;top:auto;bottom:12px;left:12px;width:calc(100% - 24px);max-height:55dvh}
+}
+html[data-edition=phone] .analysis-badge{top:65px;right:8px}
+html[data-edition=phone] .analysis-badge button{font-size:13px;padding:5px 8px}
+html[data-edition=phone] .organize-popup{position:fixed;top:auto;bottom:12px;left:50%;transform:translateX(-50%);width:min(400px,calc(100% - 24px));max-height:55dvh}
+
+.node-popup .panel .card{padding:8px;gap:5px}
+.node-popup .panel .card h2{font-size:15px}
+.node-popup .panel textarea{min-height:64px}
+.node-popup .panel .actions button{font-size:13px;padding:5px 7px}
+.node strong,.node .mono{overflow-wrap:anywhere}
+.canvas-empty{position:absolute;z-index:2;left:50%;top:43%;transform:translateX(-50%);width:min(300px,calc(100% - 24px))}
+.canvas-mode .surface[data-tool=rotate]{cursor:grab}
+.canvas-mode .surface[data-tool=rotate]:active{cursor:move}
+.canvas-mode .canvas-tools{width:max-content;overflow-x:auto;justify-content:start}
+.canvas-mode .canvas-tools>*{flex:none}
+@media(max-width:370px){.canvas-mode .canvas-tools{gap:3px}.canvas-mode .canvas-tools button{font-size:13px;padding:6px}.canvas-mode .canvas-tools .status{min-width:32px}}
+@media(max-width:760px){.organize-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.node-popup .panel{gap:7px}.project-cards .card{padding:10px}.project-cards .card h2{font-size:16px}}
+html[data-edition=phone] .organize-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+html[data-edition=phone] .project-cards .card{padding:10px}
+html[data-edition=phone] .project-cards .card h2{font-size:16px}
+
+.canvas-mode .node-popup,.organize-popup{display:flex;flex-direction:column;overflow:hidden}
+.canvas-mode .node-popup[hidden]{display:none}
+.canvas-mode .canvas-details.node-popup:not([hidden]),.organize-popup{
+  width:min(var(--popup-width,275px),calc(100vw - 20px));
+  height:var(--popup-height,auto);
+}
+.canvas-mode .canvas-details.node-popup:not([hidden]){
+  width:min(var(--popup-width,275px),calc(100% - 20px));
+  max-height:calc(100% - 180px);
+}
+.organize-popup{max-height:55dvh}
+.group:nth-child(3n) .organize-popup{left:auto;right:0}
+.popup-body{overflow:auto;min-height:0;flex:1;align-content:start;overscroll-behavior:contain}
+.popup-footer{display:flex;justify-content:flex-end;flex:none}
+.resize-grip{padding:0;width:34px;height:28px;cursor:nwse-resize;touch-action:none;user-select:none;color:var(--strong);font-size:19px;line-height:1}
+@media(max-width:760px){.group:nth-child(3n) .organize-popup{right:auto;left:0}.group:nth-child(2n) .organize-popup{left:auto;right:0}}
+@media(max-width:680px){.organize-grid .group .organize-popup{left:50%;right:auto;transform:translateX(-50%)}}
+html[data-edition=phone] .organize-grid .group .organize-popup{left:50%;right:auto;transform:translateX(-50%)}
+
+.canvas-mode .surface{cursor:crosshair;isolation:isolate}
+.canvas-mode .surface:active{cursor:crosshair}
+.canvas-mode .surface[data-tool=rotate],.canvas-mode .surface[data-tool=rotate]:active{cursor:move}
+.marquee{position:absolute;z-index:3;pointer-events:none;border:1px solid #427ba2;background:#82b9dc34}
+.analysis-badge button{font-size:13px;padding:5px 8px}
+.group p.node-description,.node-description{display:block;white-space:pre-wrap;overflow-wrap:anywhere;cursor:text;touch-action:manipulation}
+.node-description:hover{background:#eef5f9}
+.node-description:focus-visible{outline:2px solid var(--strong);outline-offset:3px}
+.description-editor{gap:6px;max-width:none}
+.description-editor textarea{display:block;width:100%;min-height:2em;padding:3px 5px;border:1px solid #a4bccd;border-radius:4px;background:#f6fafd;resize:none;overflow:hidden;font-size:14px;font-weight:400;line-height:1.45;color:var(--ink)}
+.description-editor textarea:focus{outline:1px solid #7398b3;outline-offset:0}
+.description-editor .actions{justify-content:flex-end}
+.description-editor .actions button{font-size:13px;padding:4px 8px}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top"><div class="brand"><span class="mark" aria-hidden="true">✳</span> Unstuck</div><span class="top-project" id="projectName"></span><a class="edition" id="edition"></a></header>
+<div class="layout"><aside class="nav"><p class="mono">Workspace</p><nav aria-label="Sections" id="navigation"></nav></aside>
+<div class="mobile-nav"><label class="mono" for="mobileNavigation">Workspace</label><select id="mobileNavigation"></select></div>
+<main id="screen"></main></div>
+</div>
+<dialog id="dialog"></dialog>
+<div class="toast" role="status" id="toast"></div>
+<script>
+const $ = selector => document.querySelector(selector);
+const symbols = ['▤','⌘','▥','▧','✓'];
+const pages = [
+  ['projects','Projects','Choose a project to open its writing workspace.'],
+  ['map','Story Map','Follow the story from setup to payoff.'],
+  ['organize','Organize','Compare story material by category.'],
+  ['board','Idea Dump','Drop rough thoughts anywhere on the board.'],
+  ['finalize','Finalize','Review the relationships and save a version of your story.']
+];
+const categories = ['Plot','Characters','Events','Locations','Conflicts'];
+const initialItems = [
+  ['Mira arrives at the station','Events','Mira returns to the station before midnight. The guard tells her she needs a ticket to board.'],
+  ['Mira','Characters','A courier who has sworn never to return to the station.'],
+  ['Mira boards the last train','Events','Mira shows a pass and boards the last train.'],
+  ['The empty station','Locations','The station closes after the last departure.'],
+  ['A promise to break','Conflicts','Mira must choose between keeping her promise and finding her brother.'],
+  ['To the Moon','Events','Mira steps out of the ordinary commuter train and finds her brother waiting on the Moon in flip-flops.']
+];
+const suggestions = [
+  ['A favor from the conductor','Show Mira helping the conductor earlier. The conductor repays her by leaving a spare ticket.'],
+  ['The ticket in the letter','Have Mira discover a pass tucked into her brother’s letter before she leaves for the station.'],
+  ['A choice at the gate','Put Mira’s old rival at the gate with a spare pass. Boarding means owing them a favor.']
+];
+const demoIssues = [
+  {id:'issue', title:'Missing ticket setup', question:'Where did Mira get the ticket?',
+    body:'Mira boards the train with a pass that hasn’t appeared earlier in the timeline.',
+    from:'sample-0', to:'sample-2', order:1, field:'fix', beat:'Ticket setup', options:suggestions},
+  {id:'moon', title:'Missing trip to the Moon', question:'How does the train reach the Moon?',
+    body:'Mira boards a regular train on Earth. The next scene opens on the Moon. There’s no scene explaining how the train gets there.',
+    from:'sample-2', to:'sample-5', order:3, field:'moonFix', beat:'The Moon reveal',
+    options:[
+      ['The Moon is a diner','Show the train stopping at a Moon-themed diner on Earth. Mira’s brother is waiting inside.'],
+      ['The tunnel is a launch ramp','Show the tracks leading into a launch tunnel. The train lifts off and docks at a pressurized station on the Moon.'],
+      ['The train enters a dream','Show Mira falling asleep on the train. She dreams about the Moon until her brother wakes her at the station.']
+    ]}
+];
+const issueFor = key => demoIssues.find(issue=>issue.id===(key===true ? 'issue' : key));
+const openIssues = p => p.demo ? demoIssues.filter(issue=>!p[issue.field] &&
+  p.items.some(item=>item.id===issue.from) && p.items.some(item=>item.id===issue.to)) : [];
+function updateIssueFix(p,item,body) {
+  const issue = issueFor(item?.fixesIssue);
+  if (issue && !item.alternate) p[issue.field] = body;
+}
+const phone = document.documentElement.dataset.edition === 'phone';
+const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+const id = () => globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random());
+const makeProject = (name, demo = false) => ({
+  id:id(),name,demo,fix:'',final:null,links:[],sampleStoryVersion:demo ? 4 : undefined,
+  items:demo ? initialItems.map(([title,category,body], index) => ({
+    id:'sample-'+index,title,category,body,x:[-125,105,11,-98,166,140][index],y:[-92,-72,27,108,124,38][index],file:''
+  })) : []
+});
+let state;
+try { state = JSON.parse(localStorage.getItem('unstuck-v1')); } catch {}
+if (!state?.projects?.length) state = {projects:[makeProject('The Last Train',true)]};
+if (!state.projects.some(entry => entry.sampleKey === 'observatory')) {
+  const sample = makeProject('The Quiet Observatory');
+  sample.sampleKey = 'observatory';
+  sample.items = [
+    ['The silent signal','Plot','A radio telescope picks up a signal that stops whenever someone says the astronomer’s name.'],
+    ['Noor','Characters','An astronomer who would rather lose her job than publish a false result.'],
+    ['The second transmission','Events','Noor isolates a repeating signal and records it before dawn.'],
+    ['The mountaintop dome','Locations','A remote observatory with one working radio receiver.'],
+    ['Publish or protect','Conflicts','Noor must decide whether to release a recording that identifies her colleague.']
+  ].map(([title,category,body],index)=>({id:id(),title,category,body,x:(index%3-1)*125,y:Math.floor(index/3)*100-55}));
+  state.projects.push(sample);
+}
+state.projects.forEach(entry=>{
+  if (entry.demo && entry.sampleStoryVersion !== 3) {
+    const arrival = entry.items.find(item => item.id === 'sample-0');
+    const boarding = entry.items.find(item => item.id === 'sample-2');
+    if (arrival?.title === 'The midnight departure' && arrival.category === 'Plot' &&
+        arrival.body === 'The last train leaves at midnight. Mira needs a ticket to board.') {
+      [arrival.title,arrival.category,arrival.body] = initialItems[0];
+    }
+    if (boarding?.title === 'The stolen ticket') boarding.title = initialItems[2][0];
+    if (!entry.items.some(item=>item.id==='sample-5')) {
+      const [title,category,body] = initialItems[5];
+      entry.items.push({id:'sample-5',title,category,body,order:4,x:140,y:38});
+    }
+    const ending = entry.items.find(item=>item.id==='sample-5');
+    if (ending?.title==='Mira finds her brother' && ending.body==='At the final stop, Mira finds her brother waiting on the platform.') {
+      [ending.title,ending.category,ending.body] = initialItems[5];
+    }
+    entry.sampleStoryVersion = 3;
+  }
+  if (entry.demo && entry.sampleStoryVersion === 3) {
+    const middle = entry.items.find(item=>!item.alternate && item.title.trim().toLowerCase()==='mira fell ill' && item.category==='Events');
+    const ending = entry.items.find(item=>item.id==='sample-5');
+    if (middle) {
+      middle.title = 'To the Moon';
+      middle.moonArrival = true;
+      if (!middle.body?.trim()) middle.body = 'The train’s destination display suddenly reads “The Moon.”';
+    } else if (ending?.title==='Mira finds her brother on the Moon') {
+      ending.title = 'To the Moon';
+    }
+    entry.sampleStoryVersion = 4;
+  }
+  if (entry.branches?.length) {
+    entry.items.push(...entry.branches.map(branch=>({...branch,category:'Plot',alternate:true,x:0,y:0})));
+    delete entry.branches;
+  }
+});
+let activeId;
+try { activeId = sessionStorage.getItem('unstuck-active'); } catch {}
+const project = () => state.projects.find(item => item.id === activeId);
+function save() { try { localStorage.setItem('unstuck-v1',JSON.stringify(state)); } catch {} }
+function openProject(entry) {
+  activeId = entry.id;
+  try { sessionStorage.setItem('unstuck-active',activeId); } catch {}
+  selected = null;
+  popupMode = 'details';
+  Object.values(views).forEach(view=>Object.assign(view,{x:0,y:0,z:1,ax:.25,ay:-.35}));
+  save();
+  go('map');
+}
+let page, selected = null, graph, toastTimer, popupMode = 'details';
+let navHidden = false, canvasTool = 'pan';
+let popupSize, popupResize;
+const resizeGrip = '<div class="popup-footer"><button type="button" class="resize-grip" data-resize-popup aria-label="Resize node popup with drag or arrow keys" title="Drag to resize">◢</button></div>';
+function applyPopupSize() {
+  const popup = $('.node-popup:not([hidden]), .organize-popup');
+  if (!popup || !popupSize) return;
+  popup.style.setProperty('--popup-width',popupSize.width+'px');
+  popup.style.setProperty('--popup-height',popupSize.height+'px');
+}
+function resizePopup(popup,width,height) {
+  const shell = $('.shell');
+  const maxWidth = Math.min(560,shell.clientWidth-20);
+  const maxHeight = Math.max(130,Math.min(550, popup.classList.contains('node-popup') ? shell.clientHeight-180 : window.innerHeight*.55));
+  popupSize = {
+    width:Math.max(Math.min(190,maxWidth),Math.min(maxWidth,width)),
+    height:Math.max(130,Math.min(maxHeight,height))
+  };
+  applyPopupSize();
+  fitDescriptionEditor();
+  graph?.draw();
+}
+const canvasPages = ['board','map'];
+const compact = () => phone || window.innerWidth <= 680;
+function canvasLayout(surface) {
+  const w = surface.clientWidth, h = surface.clientHeight;
+  const left = compact() || navHidden ? 0 : 186;
+  const factor = compact() ? Math.min(1,Math.max(.65,(h-240)/430)) : Math.min(1,Math.max(.45,(w-left-175)/560));
+  return {x:(w+left)/2,y:(h+50)/2,factor,left};
+}
+const timeline = {x:0,y:0,z:1,ax:.25,ay:-.35};
+const views = {board:{x:0,y:0,z:1},map:timeline};
+function currentPage() {
+  const requested = location.hash.slice(1);
+  if (!project()) return 'projects';
+  if (['analyze','assist','experiment','refine'].includes(requested)) return 'map';
+  return pages.find(entry=>entry[0]===requested)?.[0] || 'projects';
+}
+function go(key) { if (location.hash === '#'+key) render(); else location.hash = '#'+key; }
+save();
+function notify(message) {
+  $('#toast').textContent = message;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $('#toast').textContent = '',2700);
+}
+function button(label, action, primary = false) {
+  return '<button type="button" '+(primary ? 'class="primary" ' : '')+'data-action="'+escape(action)+'">'+escape(label)+'</button>';
+}
+function heading(title, description, actions = '') {
+  return '<p class="mono crumb">'+escape(page === 'projects' ? 'Workspace' : project().name)+'</p><div class="heading"><div><h1>'+title+'</h1><p class="muted">'+description+'</p></div><div class="actions">'+actions+'</div></div>';
+}
+function card(title, body, actions = '', label = '') {
+  return '<article class="card">'+(label ? '<span class="mono">'+escape(label)+'</span>' : '')+'<h2>'+escape(title)+'</h2><p class="muted">'+escape(body)+'</p><div class="actions">'+actions+'</div></article>';
+}
+function selectOptions(options, chosen) {
+  return options.map(option => '<option'+(option === chosen ? ' selected' : '')+'>'+escape(option)+'</option>').join('');
+}
+function dialog(title, fields, onSubmit, submit = 'Save') {
+  const modal = $('#dialog');
+  modal.innerHTML = '<form><h2>'+escape(title)+'</h2><div class="fields">'+fields+'</div><div class="actions">'+button('Cancel','cancel')+'<button class="primary">'+escape(submit)+'</button></div></form>';
+  modal.querySelector('form').onsubmit = async event => {
+    event.preventDefault();
+    const result = await onSubmit(new FormData(event.currentTarget));
+    if (result === false) return;
+    modal.close();
+    save();
+    render();
+  };
+  modal.showModal();
+}
+function editItem(item, chosen = 'Unsorted') {
+  const view = views.board;
+  const p = project();
+  const index = p.items.length;
+  const parents = p.items.filter(note=>note!==item && ['Plot','Events'].includes(note.category) && !note.alternate);
+  dialog(item ? 'Edit note' : 'New note',
+    '<label>Title<input required maxlength="80" name="title" value="'+escape(item?.title)+'"></label>'+
+    '<label>Notes<textarea name="body">'+escape(item?.body)+'</textarea></label>'+
+    '<label>Category<select name="category">'+selectOptions(['Unsorted',...categories],item?.category || chosen)+'</select></label>'+
+    '<label>Timeline order <small>For plot beats and events</small><input type="number" step="any" name="order" value="'+escape(item ? beatOrder(item,p) : index*2)+'"></label>'+
+    '<label>Attach flag to<select name="parent"><option value="">First beat</option>'+parents.map(note=>'<option value="'+escape(note.id)+'"'+(item?.parent===note.id ? ' selected' : '')+'>'+escape(note.title)+'</option>').join('')+'</select></label>'+
+    '<label>Reference<input name="file" type="file"></label>'+(item?.file ? '<small>Attached: '+escape(item.file)+'</small>' : ''),
+    async data => {
+      const file = data.get('file');
+      const updated = {title:data.get('title').trim(),body:data.get('body'),category:data.get('category')};
+      if (!updated.title) return false;
+      updated.order = Number(data.get('order'));
+      updated.parent = data.get('parent');
+      updateIssueFix(p,item,updated.body);
+      if (file?.size) {
+        updated.file = file.name;
+        if (file.size <= 750000) {
+          updated.reference = await new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => resolve('');
+            reader.readAsDataURL(file);
+          });
+        } else { updated.reference = ''; notify('Saved the reference name. Prototype attachments are limited to 750 KB.'); }
+      }
+      if (item) Object.assign(item,updated);
+      else project().items.push({id:id(),x:(index%3-1)*105/view.z-view.x,y:(index%4-1.5)*58/view.z-view.y,...updated});
+    });
+}
+function render() {
+  const next = currentPage();
+  if (next !== page) {
+    popupMode = 'details';
+    selected = null;
+    canvasTool = 'pan';
+  }
+  page = next;
+  graph = null;
+  $('.shell').classList.toggle('canvas-mode',canvasPages.includes(page));
+  $('.shell').classList.toggle('projects-mode',page === 'projects');
+  $('.shell').classList.toggle('nav-hidden',navHidden);
+  const [key,title,description] = pages.find(entry => entry[0] === page);
+  const p = project();
+  $('#projectName').textContent = page === 'projects' ? '' : p.name;
+  $('#edition').textContent = phone ? 'Desktop view' : 'Phone view';
+  $('#edition').href = phone ? 'writer-desktop.html' : 'writer-phone.html';
+  $('#navigation').innerHTML = pages.map(([route,label],i) => '<button data-action="go:'+route+'"'+(route === key ? ' aria-current="page"' : '')+'><span class="nav-icon" aria-hidden="true">'+symbols[i]+'</span>'+label+'</button>').join('');
+  $('#mobileNavigation').innerHTML = pages.map(([route,label]) => '<option value="'+route+'"'+(route===page?' selected':'')+'>'+label+'</option>').join('');
+  let content;
+  if (canvasPages.includes(page)) {
+    const board = page === 'board', issues = board ? [] : openIssues(p), knot = issues.length>0;
+    const primary = board ? button('+ Note','note',true) : button('+ Beat','add:Events',true);
+    const tools = knot ? button(canvasTool === 'rotate' ? 'Select' : 'Rotate knot','tool') : '';
+    const status = canvasTool === 'rotate' ? 'Drag on the board to rotate the knot' : 'Two-finger pan · Pinch to zoom · Drag to select';
+    content = '<div class="surface" id="surface" data-tool="'+canvasTool+'" aria-label="'+title+' canvas"><canvas></canvas><div class="layer"></div><div class="marquee" hidden></div></div>'+
+      '<header class="canvas-info">'+button(navHidden ? 'Show menu' : 'Hide menu','toggle-nav')+'<h1>'+title+'</h1></header>'+
+      '<section class="canvas-details node-popup" id="canvasDetails" hidden aria-label="Node details">'+
+      button('Close','close-popup')+'<section class="panel popup-body" id="inspector"></section>'+resizeGrip+'</section>'+
+      '<div class="canvas-hint" id="canvasHint" aria-live="polite" data-default="'+status+'">'+status+'</div>'+
+      '<div class="canvas-tools" role="toolbar" aria-label="'+title+' tools">'+primary+tools+button('−','out')+'<span class="status" id="zoom"></span>'+button('+','in')+button('Reset','reset')+'</div>';
+    if (!board && p.demo) {
+      content += '<div class="analysis-badge">'+(knot ? button(issues.length+' plot hole'+(issues.length===1 ? '' : 's'),'jump-issue',true) :
+        '<span class="status">Plot holes resolved</span>'+button('Replay knots','replay-knot'))+'</div>';
+    }
+    if (!board && !p.items.some(item=>item.category !== 'Unsorted')) {
+      content += '<div class="panel canvas-empty"><h2>Start your timeline</h2><p>Add a story beat or collect rough ideas first.</p><div class="actions">'+button('+ Beat','add:Events',true)+button('Idea Dump','go:board')+'</div></div>';
+    }
+  } else if (page === 'projects') {
+    content = heading(title,description,button('+ Project','new-project',true))+'<div class="cards project-cards">'+state.projects.map(entry => card(entry.name,entry.items.length+' story notes',button('Open project','open:'+entry.id,true)+button('Rename','rename:'+entry.id),entry.demo || entry.sampleKey ? 'Sample story' : '')).join('')+'</div>';
+  } else if (page === 'organize') {
+    const groups = [...categories,'Unsorted'].map(category => {
+      const items = p.items.filter(item=>item.category===category);
+      return '<section class="group"><header class="group-head"><h2>'+category+' <small>'+items.length+'</small></h2>'+button('+','add:'+category)+'</header>'+
+        (items.map(item=>'<article class="card"><h3>'+escape(item.title)+'</h3><p class="muted">'+escape(item.body)+'</p><div class="actions">'+button('Open','popup:'+item.id)+'</div>'+
+          (selected===item.id ? '<div class="panel organize-popup">'+button('Close','close-popup')+'<div class="panel popup-body">'+nodeDetails(item)+'</div>'+resizeGrip+'</div>' : '')+'</article>').join('') || '<small>No notes yet</small>')+'</section>';
+    }).join('');
+    content = heading(title,description,button('Suggest categories','categorize')+button('+ Note','note',true))+'<div class="organize-grid">'+groups+'</div>';
+  } else {
+    content = heading(title,description,button('Review map','go:map')+button('Save version','final',true))+'<div class="cards">'+
+      card('Story outline', categories.map(category=>category+' · '+p.items.filter(item=>item.category===category).length).join('\n'))+
+      card('Story relationships',p.links.length+' custom connections\n'+(p.demo ? (openIssues(p).length ? openIssues(p).length+' plot hole(s) to review.' : 'Sample plot holes resolved.') : 'Review the narrative map.'))+
+      card('Saved version',p.final ? p.final.date+'\n'+p.final.items.length+' notes captured' : 'No saved version yet.',p.final ? button('Download snapshot','download') : '')+'</div>';
+  }
+  $('#screen').innerHTML = content;
+  if (canvasPages.includes(page)) startGraph();
+  else applyPopupSize();
+}
+function beatOrder(item,p) {
+  return item.order ?? (item.id==='sample-2' ? 2 : item.id==='sample-5' ? 4 : p.items.indexOf(item)*2);
+}
+function startGraph() {
+  const surface = $('#surface');
+  const layer = surface.querySelector('.layer');
+  const canvas = surface.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+  const view = views[page], p = project();
+  const board = page === 'board', issues = board ? [] : openIssues(p), knot = issues.length>0;
+  const beats = p.items.filter(item=>['Plot','Events'].includes(item.category) && !item.alternate)
+    .sort((a,b)=>beatOrder(a,p)-beatOrder(b,p));
+  const beatNodes = (beats.length ? beats : [{id:'opening',title:'Opening'}]).map((item,i)=>({
+    id:item.id,title:item.title,label:(item.category==='Events' ? '⚑ Major event' : 'Plot beat')+' · '+(i+1),
+    kind:'beat',x:i*280-280,y:0
+  }));
+  const gaps = issues.map(issue=>{
+    const target = issue.id==='moon' ? beats.find(item=>item.moonArrival)?.id ?? issue.to : issue.to;
+    const index = beatNodes.findIndex(beat=>beat.id===target);
+    const from = beatNodes[index-1];
+    const to = beatNodes[index];
+    return from && to ? {issue,from,to} : null;
+  }).filter(Boolean);
+  const gapPoint = gap => ({x:(gap.from.x+gap.to.x)/2,y:(gap.from.y+gap.to.y)/2});
+  const flags = p.items.filter(item=>item.category !== 'Unsorted' && (!beats.includes(item)));
+  const flagCounts = {};
+  const nodes = board ? p.items.map(item=>({...item,label:item.category,kind:'note',ref:item})) : [
+    ...beatNodes,
+    ...flags.map(item=>{
+      const parentId = item.parent || (item.id==='sample-3' ? 'sample-2' : '');
+      const parent = beatNodes.find(beat=>beat.id===parentId) || beatNodes[0];
+      const index = flagCounts[parent.id] || 0;
+      flagCounts[parent.id] = index+1;
+      const labels = {Characters:'Character',Locations:'Location',Conflicts:'⚑ Conflict'};
+      return {id:item.id,title:item.title,label:item.alternate ? 'Alternate branch' : labels[item.category] || item.category,
+        kind:item.alternate ? 'alternate' : 'flag',parent:parent.id,x:parent.x+(index<2 ? 0 : (index-1)*120),y:(index%2 ? 1 : -1)*112};
+    }),
+    ...gaps.map(gap=>{
+      const center = gapPoint(gap);
+      return {id:gap.issue.id,title:gap.issue.title,label:'◎ Plot hole',kind:'issue',x:center.x,y:center.y+77};
+    })
+  ];
+  if (!board) nodes.forEach(node=>{
+    const offset = p.nodeOffsets?.[node.id];
+    node.x += offset?.x ?? 0;
+    node.y += offset?.y ?? 0;
+  });
+  const sizePoint = (x,y) => !board && compact() ? [y*.86,x*.77] : [x,y];
+
+  const selection = new Set();
+  const marquee = surface.querySelector('.marquee');
+  let drag, pinch, nativePinch;
+  const touches = new Map();
+  const elements = nodes.map(node => {
+    const element = document.createElement('button');
+    element.className = 'node '+(node.kind || '');
+    element.dataset.node = node.id;
+    element.innerHTML = '<span class="mono">'+escape(node.label)+'</span><strong>'+escape(node.title)+'</strong>';
+    layer.append(element);
+    return element;
+  });
+  function draw() {
+    if (!surface.isConnected) return;
+    const w = surface.clientWidth, h = surface.clientHeight, dpi = window.devicePixelRatio || 1;
+    canvas.width = w*dpi;
+    canvas.height = h*dpi;
+    ctx.scale(dpi,dpi);
+    const layout = canvasLayout(surface);
+    const size = view.z*layout.factor;
+    const cx = layout.x+view.x*size, cy = layout.y+view.y*size;
+    const spacing = Math.max(8,20*size);
+    surface.style.backgroundSize = spacing+'px '+spacing+'px';
+    surface.style.backgroundPosition = cx+'px '+cy+'px';
+    function point(x,y) {
+      const [u,v] = sizePoint(x,y);
+      return [cx+u*size,cy+v*size];
+    }
+    function knotPoint(knotCenter,x,y,z) {
+      const rx = x*Math.cos(view.ay)+z*Math.sin(view.ay);
+      const rz = -x*Math.sin(view.ay)+z*Math.cos(view.ay);
+      const ry = y*Math.cos(view.ax)-rz*Math.sin(view.ax);
+      const depth = y*Math.sin(view.ax)+rz*Math.cos(view.ax);
+      const perspective = 480/(480-depth);
+      return [knotCenter[0]+rx*size*perspective,knotCenter[1]+ry*size*perspective,depth];
+    }
+    function line(a,b,color,width = 1.25,dashed = false) {
+      ctx.beginPath();
+      ctx.setLineDash(dashed ? [4,5] : []);
+      ctx.moveTo(a[0],a[1]);
+      ctx.lineTo(b[0],b[1]);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.stroke();
+    }
+    const coords = nodes.map(node=>point(node.x,node.y));
+    if (!board) {
+      const lookup = new Map(nodes.map((node,i)=>[node.id,coords[i]]));
+      beatNodes.slice(1).forEach((node,i)=>{
+        const start = lookup.get(beatNodes[i].id), end = lookup.get(node.id);
+        line(start,end,'#527b96',2.4);
+        const mid = [(start[0]+end[0])/2,(start[1]+end[1])/2];
+        if (!gaps.some(gap=>gap.from===beatNodes[i] && gap.to===node)) {
+          if (compact()) {
+            line([mid[0]-5,mid[1]-6],mid,'#527b96',2);
+            line([mid[0]+5,mid[1]-6],mid,'#527b96',2);
+          } else {
+            line([mid[0]-6,mid[1]-5],mid,'#527b96',2);
+            line([mid[0]-6,mid[1]+5],mid,'#527b96',2);
+          }
+        }
+      });
+      nodes.forEach(node=>{
+        if (node.parent) line(lookup.get(node.parent),lookup.get(node.id),node.kind==='issue' ? '#b97061' : '#9a9ba3',1.4,true);
+      });
+      p.links.forEach(([a,b])=>{
+        if (lookup.has(a) && lookup.has(b)) line(lookup.get(a),lookup.get(b),'#58809b',1.3,true);
+      });
+    }
+    gaps.forEach(gap=>{
+      const center = gapPoint(gap);
+      const knotCenter = point(center.x,center.y+(compact() ? -54 : 5));
+      line(knotCenter,coords[nodes.findIndex(node=>node.id===gap.issue.id)],'#b97061',1.5,true);
+      const paths = [];
+      for(let i=0;i<=180;i++) {
+        const t = i*Math.PI/90;
+        const r = 36+15*Math.cos(3*t);
+        paths.push(knotPoint(knotCenter,r*Math.cos(2*t),r*Math.sin(2*t),29*Math.sin(3*t)));
+      }
+      paths.slice(1).map((point,i) => [paths[i],point,(point[2]+paths[i][2])/2]).sort((a,b)=>a[2]-b[2])
+        .forEach(([a,b,depth]) => {
+          line(a,b,'#f3f8fb',6);
+          line(a,b,depth > 0 ? '#ad4937' : '#cb8679',3);
+        });
+    });
+    elements.forEach((el,i) => {
+      el.style.left = coords[i][0]+'px';
+      el.style.top = coords[i][1]+'px';
+      const highlighted = selected===nodes[i].id || selection.has(nodes[i].id);
+      el.style.zIndex = highlighted ? '2' : '1';
+      el.classList.toggle('selected',highlighted);
+    });
+    const popup = $('#canvasDetails');
+    const index = nodes.findIndex(node=>node.id===selected);
+    if (!popup.hidden && index>=0) {
+      const [x,y] = coords[index], anchor = elements[index];
+      const pw = popup.offsetWidth, ph = popup.offsetHeight;
+      const margin = 8, minLeft = Math.min(layout.left+margin,Math.max(margin,w-pw-margin));
+      const beside = x+anchor.offsetWidth/2+12;
+      const otherSide = x-anchor.offsetWidth/2-12-pw;
+      const fitsBeside = beside+pw<=w-margin || otherSide>=minLeft;
+      let left = beside+pw<=w-margin ? beside : otherSide;
+      let top = y-ph/2;
+      if (!fitsBeside) {
+        left = x-pw/2;
+        const below = y+anchor.offsetHeight/2+12;
+        top = below+ph<h-60 ? below : y-anchor.offsetHeight/2-12-ph;
+      }
+      if (popupResize?.popup === popup) {
+        left = popupResize.left;
+        top = popupResize.top;
+      }
+      popup.style.left = Math.max(minLeft,Math.min(w-pw-margin,left))+'px';
+      popup.style.top = Math.max(compact() ? 113 : 72,Math.min(h-ph-61,top))+'px';
+    }
+    $('#zoom').textContent = Math.round(view.z*100)+'%';
+  }
+  function localPoint(x,y) {
+    const bounds = surface.getBoundingClientRect();
+    return {x:x-bounds.left,y:y-bounds.top};
+  }
+  function pan(dx,dy) {
+    const scale = view.z*canvasLayout(surface).factor;
+    view.x += dx/scale;
+    view.y += dy/scale;
+  }
+  function zoom(multiplier, anchor) {
+    const next = Math.max(.2,Math.min(4,view.z*multiplier));
+    if (anchor) {
+      const layout = canvasLayout(surface);
+      const delta = (1/next-1/view.z)/layout.factor;
+      view.x += (anchor.x-layout.x)*delta;
+      view.y += (anchor.y-layout.y)*delta;
+    }
+    view.z = next;
+    draw();
+  }
+  function moveMarquee(start,end) {
+    const left = Math.min(start.x,end.x), top = Math.min(start.y,end.y);
+    const right = Math.max(start.x,end.x), bottom = Math.max(start.y,end.y);
+    Object.assign(marquee.style,{left:left+'px',top:top+'px',width:(right-left)+'px',height:(bottom-top)+'px'});
+    marquee.hidden = false;
+    selection.clear();
+    elements.forEach((el,i)=>{
+      const cx = parseFloat(el.style.left), cy = parseFloat(el.style.top);
+      const hw = el.offsetWidth/2, hh = el.offsetHeight/2;
+      if (cx+hw>=left && cx-hw<=right && cy+hh>=top && cy-hh<=bottom) selection.add(nodes[i].id);
+    });
+    const hint = $('#canvasHint');
+    hint.textContent = selection.size ? selection.size+' selected' : hint.dataset.default;
+    draw();
+  }
+  function touchSpan() {
+    const [a,b] = touches.values();
+    return {x:(a.x+b.x)/2,y:(a.y+b.y)/2,distance:Math.max(1,Math.hypot(a.x-b.x,a.y-b.y))};
+  }
+  surface.addEventListener('pointerdown', event => {
+    if (event.button !== 0 && event.button !== 1) return;
+    const point = localPoint(event.clientX,event.clientY);
+    if (event.pointerType==='touch') {
+      touches.set(event.pointerId,point);
+      surface.setPointerCapture(event.pointerId);
+      if (touches.size>=2) {
+        drag = null;
+        pinch = touchSpan();
+        return;
+      }
+    }
+    if (drag) return;
+    const target = event.target.closest('[data-node]');
+    const node = nodes.find(entry=>entry.id===target?.dataset.node);
+    const mode = event.button===1 ? 'pan' : knot && canvasTool==='rotate' && !node ? 'rotate' :
+      node ? 'move' : event.pointerType==='touch' ? 'pan' : 'select';
+    drag = {node,mode,start:point,last:point,moved:false,pointer:event.pointerId};
+    if (event.pointerType!=='touch') (target || surface).setPointerCapture(event.pointerId);
+    if (event.button===1) event.preventDefault();
+  });
+  surface.addEventListener('pointermove', event => {
+    const point = localPoint(event.clientX,event.clientY);
+    if (touches.has(event.pointerId)) {
+      touches.set(event.pointerId,point);
+      if (pinch && touches.size>=2) {
+        const next = touchSpan();
+        pan(next.x-pinch.x,next.y-pinch.y);
+        zoom(next.distance/pinch.distance,next);
+        pinch = next;
+        return;
+      }
+    }
+    if (drag?.pointer !== event.pointerId) return;
+    if (!drag.moved && Math.hypot(point.x-drag.start.x,point.y-drag.start.y)<5) return;
+    const previous = drag.moved ? drag.last : drag.start;
+    const dx = point.x-previous.x, dy = point.y-previous.y;
+    if (!drag.moved && drag.mode==='select') {
+      selected = null;
+      inspector();
+    }
+    drag.moved = true;
+    drag.last = point;
+    if (drag.mode==='select') {
+      moveMarquee(drag.start,point);
+    } else if (drag.mode==='rotate') {
+      view.ay += dx*.012;
+      view.ax += dy*.012;
+      draw();
+    } else if (drag.mode==='move') {
+      const scale = view.z*canvasLayout(surface).factor;
+      const moving = selection.has(drag.node.id) ? nodes.filter(node=>selection.has(node.id)) : [drag.node];
+      const mx = !board && compact() ? dy/(scale*.77) : dx/scale;
+      const my = !board && compact() ? dx/(scale*.86) : dy/scale;
+      moving.forEach(node=>{
+        node.x += mx;
+        node.y += my;
+        if (board) Object.assign(node.ref,{x:node.x,y:node.y});
+        else {
+          p.nodeOffsets ??= {};
+          const offset = p.nodeOffsets[node.id] ?? {x:0,y:0};
+          p.nodeOffsets[node.id] = {x:offset.x+mx,y:offset.y+my};
+        }
+      });
+      draw();
+    } else if (drag.mode==='pan') {
+      pan(dx,dy);
+      draw();
+    }
+  });
+  function finishPointer(event) {
+    if (touches.delete(event.pointerId)) pinch = touches.size>=2 ? touchSpan() : null;
+    if (drag?.pointer !== event.pointerId) return;
+    marquee.hidden = true;
+    const completed = event.type==='pointerup';
+    if (drag.mode==='move' && drag.moved) save();
+    if (completed && !drag.moved && event.button===0) selectNode(drag.node?.id ?? null);
+    drag = null;
+  }
+  surface.addEventListener('pointerup',finishPointer);
+  surface.addEventListener('pointercancel',finishPointer);
+  surface.addEventListener('lostpointercapture',finishPointer);
+  surface.addEventListener('click',event => {
+    if (event.detail !== 0) return;
+    const node = event.target.closest('[data-node]');
+    if (node) selectNode(node.dataset.node);
+  });
+  surface.addEventListener('dblclick',event => {
+    const node = event.target.closest('[data-node]');
+    if (node && !board) focusNode(node.dataset.node);
+  });
+  surface.addEventListener('wheel',event => {
+    event.preventDefault();
+    const unit = event.deltaMode===1 ? 16 : event.deltaMode===2 ? surface.clientHeight : 1;
+    if (event.ctrlKey || event.metaKey) {
+      if (!nativePinch) zoom(Math.exp(-event.deltaY*unit*.009),localPoint(event.clientX,event.clientY));
+    } else {
+      pan(-event.deltaX*unit,-event.deltaY*unit);
+      draw();
+    }
+  },{passive:false});
+  surface.addEventListener('gesturestart',event=>{
+    event.preventDefault();
+    nativePinch = 1;
+  },{passive:false});
+  surface.addEventListener('gesturechange',event=>{
+    if (!nativePinch) return;
+    event.preventDefault();
+    zoom(event.scale/nativePinch,localPoint(event.clientX,event.clientY));
+    nativePinch = event.scale;
+  },{passive:false});
+  surface.addEventListener('gestureend',event=>{
+    event.preventDefault();
+    nativePinch = null;
+  },{passive:false});
+  function selectNode(nodeId) {
+    selection.clear();
+    const hint = $('#canvasHint');
+    hint.textContent = hint.dataset.default;
+    selected = nodeId;
+    popupMode = 'details';
+    inspector();
+    draw();
+  }
+  function focusNode(nodeId, onlyIfOutside = false) {
+    const node = nodes.find(entry=>entry.id===nodeId);
+    if (!node) return;
+    const [x,y] = sizePoint(node.x,node.y);
+    const layout = canvasLayout(surface), size = view.z*layout.factor;
+    const px = layout.x+(view.x+x)*size, py = layout.y+(view.y+y)*size;
+    if (!onlyIfOutside || px<layout.left+60 || px>surface.clientWidth-60 || py<125 || py>surface.clientHeight-75) {
+      Object.assign(view,{x:-x,y:-y,z:1});
+    }
+    selectNode(nodeId);
+  }
+  graph = {draw,zoom,focusNode,clearSelection:()=>selectNode(null),reset() {
+    Object.assign(view,{x:0,y:0,z:1,ax:.25,ay:-.35});
+    draw();
+  }};
+  inspector();
+  draw();
+}
+function nodeOptions(item) {
+  const issue = issueFor(selected);
+  if (issue) return issue.options;
+  return [
+    ['Show the cause','Add a moment before “'+item.title+'” that shows what causes it.'],
+    ['Show the consequence','Add a follow-up to “'+item.title+'” that changes what a character can do next.']
+  ];
+}
+function nodeDetails(item) {
+  const isIssue = issueFor(selected);
+  const title = isIssue ? isIssue.question : item.title;
+  const body = isIssue ? project().issueDescriptions?.[isIssue.id] ?? isIssue.body : item.body;
+  const header = '<span class="mono'+(isIssue ? ' issue-text' : '')+'">'+escape(isIssue ? 'Open plot hole' : item.category)+'</span><h2>'+escape(title)+'</h2>';
+  const description = '<p class="muted node-description" tabindex="0" data-description title="Double-click to edit" aria-description="Double-click or press Enter to edit">'+escape(body || 'Add a description')+'</p>';
+  const tabs = '<div class="actions">'+[['suggestions','Suggestions'],['experiment','Experiment']].map(([key,label])=>button(label,'mode:'+(key===popupMode ? 'details' : key),key===popupMode)).join('')+'</div>';
+  let content;
+  if (popupMode==='suggestions' || popupMode==='experiment') {
+    const options = nodeOptions(item);
+    const experimenting = popupMode==='experiment';
+    content = '<p class="muted">'+(experimenting ? 'Try an alternate direction as a branch.' : 'Sample AI suggestions')+'</p>'+
+      options.map(([label,description],index)=>card(label,description,button(experimenting ? 'Try branch' : 'Add node',(experimenting ? 'try-option:' : 'add-option:')+index,true))).join('')+
+      (experimenting ? button('Write a branch','branch') : '');
+  } else {
+    content = '';
+    if (!isIssue) content += '<div class="actions">'+button('Edit note','edit:'+item.id)+button('Connect notes','connect')+button('Remove','remove:'+item.id)+'</div>'+
+      (item.reference?.startsWith('data:') ? '<a download="'+escape(item.file)+'" href="'+escape(item.reference)+'">'+escape(item.file)+'</a>' : escape(item.file))+
+      (item.alternate ? button('Use this branch','use-branch:'+item.id,true) : '');
+  }
+  return header+description+tabs+content;
+}
+function inspector() {
+  const popup = $('#canvasDetails'), panel = $('#inspector');
+  if (!popup) return;
+  const p = project(), item = p.items.find(note=>note.id===selected);
+  const hasIssue = openIssues(p).some(issue=>issue.id===selected);
+  popup.hidden = !item && !hasIssue && selected!=='opening';
+  panel.innerHTML = popup.hidden ? '' : selected==='opening' ? '<h2>Opening</h2>'+button('+ Beat','add:Events',true) : nodeDetails(item);
+  applyPopupSize();
+}
+function insertOption(title,body,alternate,placement = 1) {
+  const p = project(), isIssue = issueFor(selected);
+  const parent = isIssue ? isIssue.from : selected;
+  const base = p.items.find(item=>item.id===parent);
+  const entry = {id:id(),title,body,category:isIssue ? 'Events' : 'Plot',parent,alternate,fixesIssue:isIssue?.id,
+    x:(base?.x ?? 0)+130,y:(base?.y ?? 0)+55};
+  if (isIssue?.id==='moon') {
+    const beats = p.items.filter(item=>item!==entry && !item.alternate && ['Plot','Events'].includes(item.category))
+      .sort((a,b)=>beatOrder(a,p)-beatOrder(b,p));
+    const target = beats.findIndex(item=>item.id===(beats.find(note=>note.moonArrival)?.id ?? isIssue.to));
+    entry.order = target>0 ? (beatOrder(beats[target-1],p)+beatOrder(beats[target],p))/2 : isIssue.order;
+  } else if (isIssue) entry.order = isIssue.order;
+  else if (base) entry.order = beatOrder(base,p)+placement*.5;
+  p.items.push(entry);
+  if (!alternate && isIssue) {
+    updateIssueFix(p,entry,body);
+    canvasTool = 'pan';
+  }
+  if (base) p.links.push([base.id,entry.id]);
+  selected = entry.id;
+  popupMode = 'details';
+  save();
+  render();
+  graph?.focusNode(entry.id,true);
+  notify(alternate ? 'Alternate branch added.' : isIssue ? 'Beat added. Plot hole resolved.' : 'Node added.');
+}
+document.addEventListener('click',event => {
+  const target = event.target.closest('[data-action]');
+  if (!target) return;
+  const [action, arg] = target.dataset.action.split(':');
+  const p = project();
+  const item = p?.items.find(note=>note.id===arg);
+  switch (action) {
+    case 'go': go(arg); return;
+    case 'cancel': $('#dialog').close(); return;
+    case 'in': graph.zoom(1.25); return;
+    case 'out': graph.zoom(.8); return;
+    case 'reset': graph.reset(); return;
+    case 'focus': graph.focusNode(arg); return;
+    case 'note': editItem(); return;
+    case 'add': editItem(null,arg); return;
+    case 'edit': if (item) editItem(item); return;
+    case 'remove':
+      dialog('Remove this note?','<p>'+escape(item.title)+'</p>',() => {
+        p.items = p.items.filter(note=>note.id!==arg);
+        p.links = p.links.filter(link=>!link.includes(arg));
+        updateIssueFix(p,item,p.items.find(note=>!note.alternate && issueFor(note.fixesIssue)===issueFor(item.fixesIssue))?.body || '');
+        if (selected===arg) selected=null;
+      },'Remove');
+      return;
+    case 'open': openProject(state.projects.find(entry=>entry.id===arg)); return;
+    case 'new-project':
+    case 'rename': {
+      const entry = state.projects.find(project=>project.id===arg);
+      dialog(entry ? 'Rename project' : 'New story project','<label>Project name<input required maxlength="80" name="name" value="'+escape(entry?.name)+'"></label>',data=>{
+        const name = data.get('name').trim();
+        if (!name) return false;
+        if (entry) entry.name = name;
+        else {
+          const created = makeProject(name);
+          state.projects.push(created);
+          openProject(created);
+        }
+      },entry ? 'Save' : 'Create');
+      return;
+    }
+    case 'toggle-nav': navHidden = !navHidden; render(); return;
+    case 'tool': canvasTool = canvasTool === 'pan' ? 'rotate' : 'pan'; render(); return;
+    case 'jump-issue': {
+      const issues = openIssues(p);
+      const index = issues.findIndex(issue=>issue.id===selected);
+      graph.focusNode(issues[(index+1)%issues.length].id,true);
+      return;
+    }
+    case 'replay-knot':
+      demoIssues.forEach(issue=>{
+        const stored = p[issue.field];
+        const fixes = p.items.filter(note=>issueFor(note.fixesIssue)===issue);
+        if (stored && !fixes.some(note=>note.body===stored)) {
+          p.items.push({id:id(),title:issue.beat,body:stored,category:'Events',order:issue.order,
+            parent:issue.from,fixesIssue:issue.id,alternate:true,x:5,y:-10});
+        }
+        fixes.forEach(note=>{note.alternate = true;});
+        p[issue.field] = '';
+      });
+      Object.assign(timeline,{x:0,y:0,z:1,ax:.25,ay:-.35});
+      selected = openIssues(p)[0]?.id;
+      popupMode = 'details';
+      break;
+    case 'popup': selected = arg; popupMode = 'details'; break;
+    case 'cancel-description': render(); return;
+    case 'close-popup': selected = null; popupMode = 'details'; break;
+    case 'mode': popupMode = arg; break;
+    case 'add-option':
+    case 'try-option': {
+      const [title,body] = nodeOptions(p.items.find(note=>note.id===selected))[Number(arg)];
+      insertOption(title,body,action==='try-option',Number(arg)===0 ? -1 : 1);
+      return;
+    }
+    case 'branch':
+      dialog('New alternate branch','<label>Title<input required name="title"></label><label>What changes?<textarea required name="body"></textarea></label>',data=>{
+        const title = data.get('title').trim(), body = data.get('body').trim();
+        if (!title || !body) return false;
+        insertOption(title,body,true);
+      });
+      return;
+    case 'use-branch':
+      item.alternate = false;
+      if (item.fixesIssue) {
+        updateIssueFix(p,item,item.body);
+        canvasTool = 'pan';
+      }
+      break;
+    case 'categorize': {
+      const patterns = [/plot|chapter|ending/i,/character|motive|person/i,/event|scene|happen/i,/location|city|place/i,/conflict|rival|fight/i];
+      let count = 0;
+      p.items.filter(note=>note.category==='Unsorted').forEach(note=>{
+        const match = patterns.findIndex(pattern=>pattern.test(note.title+' '+note.body));
+        if (match>=0) {note.category=categories[match]; count++;}
+      });
+      notify(count ? 'Categorized '+count+' note(s).' : 'No category matches found in unsorted notes.');
+      break;
+    }
+    case 'connect': {
+      if (p.items.length < 2) {notify('Add at least two notes to make a connection.'); return;}
+      const options = p.items.map(note=>'<option value="'+escape(note.id)+'">'+escape(note.title)+'</option>');
+      dialog('Connect story notes','<label>From<select name="from">'+options.join('')+'</select></label><label>To<select name="to">'+options.slice().reverse().join('')+'</select></label>',data=>{
+        const from=data.get('from'),to=data.get('to');
+        if (from===to) {notify('Choose two different notes.');return false;}
+        if (!p.links.some(link=>link[0]===from && link[1]===to)) p.links.push([from,to]);
+      },'Connect');
+      return;
+    }
+    case 'final':
+      p.final = {name:p.name,date:new Date().toLocaleString(),items:p.items.map(({title,category,body,file})=>({title,category,body,file})),fix:p.fix,moonFix:p.moonFix,links:p.links.map(link=>link.map(noteId=>p.items.find(note=>note.id===noteId)?.title))};
+      notify('Version saved.'); break;
+    case 'download': {
+      const url = URL.createObjectURL(new Blob([JSON.stringify(p.final,null,2)],{type:'application/json'}));
+      const link = document.createElement('a');
+      link.href=url; link.download='story-version.json'; link.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+      return;
+    }
+  }
+  save();
+  render();
+});
+document.addEventListener('pointerdown',event=>{
+  const grip = event.target.closest('[data-resize-popup]');
+  if (!grip || event.button !== 0 || popupResize) return;
+  const popup = grip.closest('.node-popup, .organize-popup');
+  popupResize = {popup,pointer:event.pointerId,x:event.clientX,y:event.clientY,
+    width:popup.offsetWidth,height:popup.offsetHeight,left:popup.offsetLeft,top:popup.offsetTop};
+  grip.setPointerCapture(event.pointerId);
+  event.preventDefault();
+});
+document.addEventListener('pointermove',event=>{
+  const drag = popupResize;
+  if (drag?.pointer !== event.pointerId) return;
+  resizePopup(drag.popup,drag.width+event.clientX-drag.x,drag.height+event.clientY-drag.y);
+});
+function endPopupResize(event) {
+  if (popupResize?.pointer === event.pointerId) popupResize = null;
+}
+document.addEventListener('pointerup',endPopupResize);
+document.addEventListener('pointercancel',endPopupResize);
+document.addEventListener('lostpointercapture',endPopupResize);
+document.addEventListener('keydown',event=>{
+  const description = event.target.closest('[data-description]');
+  if (description && (event.key==='Enter' || event.key===' ')) {
+    event.preventDefault();
+    editDescription(description);
+    return;
+  }
+  if (event.key==='Escape' && event.target.closest('.description-editor')) {
+    render();
+    return;
+  }
+  if (event.key==='Escape' && graph && !$('#dialog').open) graph.clearSelection();
+  const grip = event.target.closest('[data-resize-popup]');
+  const delta = {ArrowLeft:[-16,0],ArrowRight:[16,0],ArrowUp:[0,-16],ArrowDown:[0,16]}[event.key];
+  if (!grip || !delta) return;
+  event.preventDefault();
+  const popup = grip.closest('.node-popup, .organize-popup');
+  resizePopup(popup,popup.offsetWidth+delta[0],popup.offsetHeight+delta[1]);
+});
+function fitDescriptionEditor(textarea = $('#descriptionEditor textarea')) {
+  if (!textarea) return;
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + textarea.offsetHeight - textarea.clientHeight + 'px';
+}
+function editDescription(element) {
+  const p = project(), issue = issueFor(selected);
+  const item = p.items.find(note=>note.id===selected);
+  if (!issue && !item) return;
+  const body = issue ? p.issueDescriptions?.[issue.id] ?? issue.body : item.body;
+  const editor = document.createElement('form');
+  editor.className = 'fields description-editor';
+  editor.id = 'descriptionEditor';
+  editor.innerHTML = '<textarea name="body" rows="1" aria-label="Description">'+escape(body)+'</textarea>'+
+    '<div class="actions">'+button('Cancel','cancel-description')+'<button class="primary">Save</button></div>';
+  element.replaceWith(editor);
+  const textarea = editor.querySelector('textarea');
+  fitDescriptionEditor(textarea);
+  textarea.addEventListener('input',()=>{
+    fitDescriptionEditor(textarea);
+    graph?.draw();
+  });
+  textarea.focus({preventScroll:true});
+  textarea.setSelectionRange(textarea.value.length,textarea.value.length);
+  graph?.draw();
+}
+document.addEventListener('dblclick',event=>{
+  const description = event.target.closest('[data-description]');
+  if (description) editDescription(description);
+});
+let lastDescriptionTap;
+document.addEventListener('pointerup',event=>{
+  if (event.pointerType !== 'touch') return;
+  const description = event.target.closest('[data-description]');
+  if (description && lastDescriptionTap?.element===description && event.timeStamp-lastDescriptionTap.time<350 &&
+      Math.hypot(event.clientX-lastDescriptionTap.x,event.clientY-lastDescriptionTap.y)<25) {
+    lastDescriptionTap = null;
+    editDescription(description);
+  } else {
+    lastDescriptionTap = description ? {element:description,time:event.timeStamp,x:event.clientX,y:event.clientY} : null;
+  }
+});
+document.addEventListener('submit',event=>{
+  if (event.target.id !== 'descriptionEditor') return;
+  event.preventDefault();
+  const body = new FormData(event.target).get('body').trim();
+  const p = project(), issue = issueFor(selected);
+  if (issue) {
+    p.issueDescriptions ??= {};
+    p.issueDescriptions[issue.id] = body;
+  } else {
+    const item = p.items.find(note=>note.id===selected);
+    item.body = body;
+    updateIssueFix(p,item,body);
+  }
+  save();
+  render();
+});
+$('#mobileNavigation').addEventListener('change',event=>go(event.target.value));
+window.addEventListener('hashchange',()=>{window.scrollTo(0,0);render();});
+window.addEventListener('resize',()=>{fitDescriptionEditor();graph?.draw();});
+render();
+</script>
+</body>
+</html>
