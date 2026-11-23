@@ -1,6 +1,6 @@
 # Unstuck
 
-A low-fidelity writing workspace with an interactive timeline, an infinite idea board, and sample plot holes you can resolve on the story map.
+A low-fidelity writing workspace with an interactive timeline, rough ideas on the same infinite board, and sample plot holes you can resolve on the story map.
 
 ## Open online
 

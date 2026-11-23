@@ -141,6 +141,7 @@ html[data-edition=phone] .organize-grid .group .organize-popup{left:50%;right:au
 .description-editor textarea:focus{outline:1px solid #7398b3;outline-offset:0}
 .description-editor .actions{justify-content:flex-end}
 .description-editor .actions button{font-size:13px;padding:4px 8px}
+@media(max-width:680px){.canvas-tools [data-action=tool]{display:none}}
 </style>
 </head>
 <body>
@@ -154,12 +155,11 @@ html[data-edition=phone] .organize-grid .group .organize-popup{left:50%;right:au
 <div class="toast" role="status" id="toast"></div>
 <script>
 const $ = selector => document.querySelector(selector);
-const symbols = ['▤','⌘','▥','▧','✓'];
+const symbols = ['▤','⌘','▥','✓'];
 const pages = [
   ['projects','Projects','Choose a project to open its writing workspace.'],
   ['map','Story Map','Follow the story from setup to payoff.'],
   ['organize','Organize','Compare story material by category.'],
-  ['board','Idea Dump','Drop rough thoughts anywhere on the board.'],
   ['finalize','Finalize','Review the relationships and save a version of your story.']
 ];
 const categories = ['Plot','Characters','Events','Locations','Conflicts'];
@@ -265,7 +265,7 @@ function openProject(entry) {
   try { sessionStorage.setItem('unstuck-active',activeId); } catch {}
   selected = null;
   popupMode = 'details';
-  Object.values(views).forEach(view=>Object.assign(view,{x:0,y:0,z:1,ax:.25,ay:-.35}));
+  Object.assign(timeline,{x:0,y:0,z:1,ax:.25,ay:-.35});
   save();
   go('map');
 }
@@ -291,7 +291,7 @@ function resizePopup(popup,width,height) {
   fitDescriptionEditor();
   graph?.draw();
 }
-const canvasPages = ['board','map'];
+let pendingFocus;
 const compact = () => phone || window.innerWidth <= 680;
 function canvasLayout(surface) {
   const w = surface.clientWidth, h = surface.clientHeight;
@@ -300,11 +300,10 @@ function canvasLayout(surface) {
   return {x:(w+left)/2,y:(h+50)/2,factor,left};
 }
 const timeline = {x:0,y:0,z:1,ax:.25,ay:-.35};
-const views = {board:{x:0,y:0,z:1},map:timeline};
 function currentPage() {
   const requested = location.hash.slice(1);
   if (!project()) return 'projects';
-  if (['analyze','assist','experiment','refine'].includes(requested)) return 'map';
+  if (['board','analyze','assist','experiment','refine'].includes(requested)) return 'map';
   return pages.find(entry=>entry[0]===requested)?.[0] || 'projects';
 }
 function go(key) { if (location.hash === '#'+key) render(); else location.hash = '#'+key; }
@@ -340,11 +339,10 @@ function dialog(title, fields, onSubmit, submit = 'Save') {
   modal.showModal();
 }
 function editItem(item, chosen = 'Unsorted') {
-  const view = views.board;
   const p = project();
   const index = p.items.length;
   const parents = p.items.filter(note=>note!==item && ['Plot','Events'].includes(note.category) && !note.alternate);
-  dialog(item ? 'Edit note' : 'New note',
+  dialog(item ? 'Edit note' : chosen === 'Unsorted' && page === 'map' ? 'New idea' : 'New note',
     '<label>Title<input required maxlength="80" name="title" value="'+escape(item?.title)+'"></label>'+
     '<label>Notes<textarea name="body">'+escape(item?.body)+'</textarea></label>'+
     '<label>Category<select name="category">'+selectOptions(['Unsorted',...categories],item?.category || chosen)+'</select></label>'+
@@ -370,7 +368,11 @@ function editItem(item, chosen = 'Unsorted') {
         } else { updated.reference = ''; notify('Saved the reference name. Prototype attachments are limited to 750 KB.'); }
       }
       if (item) Object.assign(item,updated);
-      else project().items.push({id:id(),x:(index%3-1)*105/view.z-view.x,y:(index%4-1.5)*58/view.z-view.y,...updated});
+      else {
+        const entry = {id:id(),...updated};
+        p.items.push(entry);
+        if (page === 'map') pendingFocus = entry.id;
+      }
     });
 }
 function render() {
@@ -382,7 +384,7 @@ function render() {
   }
   page = next;
   graph = null;
-  $('.shell').classList.toggle('canvas-mode',canvasPages.includes(page));
+  $('.shell').classList.toggle('canvas-mode',page === 'map');
   $('.shell').classList.toggle('projects-mode',page === 'projects');
   $('.shell').classList.toggle('nav-hidden',navHidden);
   const [key,title,description] = pages.find(entry => entry[0] === page);
@@ -393,10 +395,10 @@ function render() {
   $('#navigation').innerHTML = pages.map(([route,label],i) => '<button data-action="go:'+route+'"'+(route === key ? ' aria-current="page"' : '')+'><span class="nav-icon" aria-hidden="true">'+symbols[i]+'</span>'+label+'</button>').join('');
   $('#mobileNavigation').innerHTML = pages.map(([route,label]) => '<option value="'+route+'"'+(route===page?' selected':'')+'>'+label+'</option>').join('');
   let content;
-  if (canvasPages.includes(page)) {
-    const board = page === 'board', issues = board ? [] : openIssues(p), knot = issues.length>0;
-    const primary = board ? button('+ Note','note',true) : button('+ Beat','add:Events',true);
-    const tools = knot ? button(canvasTool === 'rotate' ? 'Select' : 'Rotate knot','tool') : '';
+  if (page === 'map') {
+    const issues = openIssues(p), knot = issues.length>0;
+    const primary = button('+ Beat','add:Events',true)+button('+ Idea','note');
+    const tools = knot && !phone ? button(canvasTool === 'rotate' ? 'Select' : 'Rotate knot','tool') : '';
     const status = canvasTool === 'rotate' ? 'Drag on the board to rotate the knot' : 'Two-finger pan · Pinch to zoom · Drag to select';
     content = '<div class="surface" id="surface" data-tool="'+canvasTool+'" aria-label="'+title+' canvas"><canvas></canvas><div class="layer"></div><div class="marquee" hidden></div></div>'+
       '<header class="canvas-info">'+button(navHidden ? 'Show menu' : 'Hide menu','toggle-nav')+'<h1>'+title+'</h1></header>'+
@@ -404,12 +406,12 @@ function render() {
       button('Close','close-popup')+'<section class="panel popup-body" id="inspector"></section>'+resizeGrip+'</section>'+
       '<div class="canvas-hint" id="canvasHint" aria-live="polite" data-default="'+status+'">'+status+'</div>'+
       '<div class="canvas-tools" role="toolbar" aria-label="'+title+' tools">'+primary+tools+button('−','out')+'<span class="status" id="zoom"></span>'+button('+','in')+button('Reset','reset')+'</div>';
-    if (!board && p.demo) {
+    if (p.demo) {
       content += '<div class="analysis-badge">'+(knot ? button(issues.length+' plot hole'+(issues.length===1 ? '' : 's'),'jump-issue',true) :
         '<span class="status">Plot holes resolved</span>'+button('Replay knots','replay-knot'))+'</div>';
     }
-    if (!board && !p.items.some(item=>item.category !== 'Unsorted')) {
-      content += '<div class="panel canvas-empty"><h2>Start your timeline</h2><p>Add a story beat or collect rough ideas first.</p><div class="actions">'+button('+ Beat','add:Events',true)+button('Idea Dump','go:board')+'</div></div>';
+    if (!p.items.length) {
+      content += '<div class="panel canvas-empty"><h2>Start your timeline</h2><p>Add a story beat or collect rough ideas first.</p><div class="actions">'+button('+ Beat','add:Events',true)+button('+ Idea','note')+'</div></div>';
     }
   } else if (page === 'projects') {
     content = heading(title,description,button('+ Project','new-project',true))+'<div class="cards project-cards">'+state.projects.map(entry => card(entry.name,entry.items.length+' story notes',button('Open project','open:'+entry.id,true)+button('Rename','rename:'+entry.id),entry.demo || entry.sampleKey ? 'Sample story' : '')).join('')+'</div>';
@@ -428,8 +430,11 @@ function render() {
       card('Saved version',p.final ? p.final.date+'\n'+p.final.items.length+' notes captured' : 'No saved version yet.',p.final ? button('Download snapshot','download') : '')+'</div>';
   }
   $('#screen').innerHTML = content;
-  if (canvasPages.includes(page)) startGraph();
-  else applyPopupSize();
+  if (page === 'map') {
+    startGraph();
+    if (pendingFocus) graph.focusNode(pendingFocus,true);
+    pendingFocus = null;
+  } else applyPopupSize();
 }
 function beatOrder(item,p) {
   return item.order ?? (item.id==='sample-2' ? 2 : item.id==='sample-5' ? 4 : p.items.indexOf(item)*2);
@@ -439,8 +444,8 @@ function startGraph() {
   const layer = surface.querySelector('.layer');
   const canvas = surface.querySelector('canvas');
   const ctx = canvas.getContext('2d');
-  const view = views[page], p = project();
-  const board = page === 'board', issues = board ? [] : openIssues(p), knot = issues.length>0;
+  const view = timeline, p = project();
+  const issues = openIssues(p), knot = issues.length>0;
   const beats = p.items.filter(item=>['Plot','Events'].includes(item.category) && !item.alternate)
     .sort((a,b)=>beatOrder(a,p)-beatOrder(b,p));
   const beatNodes = (beats.length ? beats : [{id:'opening',title:'Opening'}]).map((item,i)=>({
@@ -457,8 +462,15 @@ function startGraph() {
   const gapPoint = gap => ({x:(gap.from.x+gap.to.x)/2,y:(gap.from.y+gap.to.y)/2});
   const flags = p.items.filter(item=>item.category !== 'Unsorted' && (!beats.includes(item)));
   const flagCounts = {};
-  const nodes = board ? p.items.map(item=>({...item,label:item.category,kind:'note',ref:item})) : [
+  const ideas = p.items.filter(item=>item.category==='Unsorted');
+  const lastBeatX = beatNodes.at(-1).x;
+  const nodes = [
     ...beatNodes,
+    ...ideas.map((item,index)=>({
+      id:item.id,title:item.title,label:'Idea',kind:'note',
+      x:compact() ? lastBeatX+185+Math.floor(index/2)*120 : -245+(index%3)*200,
+      y:compact() ? (index%2 ? 105 : -105) : 218+Math.floor(index/3)*110
+    })),
     ...flags.map(item=>{
       const parentId = item.parent || (item.id==='sample-3' ? 'sample-2' : '');
       const parent = beatNodes.find(beat=>beat.id===parentId) || beatNodes[0];
@@ -473,12 +485,12 @@ function startGraph() {
       return {id:gap.issue.id,title:gap.issue.title,label:'◎ Plot hole',kind:'issue',x:center.x,y:center.y+77};
     })
   ];
-  if (!board) nodes.forEach(node=>{
+  nodes.forEach(node=>{
     const offset = p.nodeOffsets?.[node.id];
     node.x += offset?.x ?? 0;
     node.y += offset?.y ?? 0;
   });
-  const sizePoint = (x,y) => !board && compact() ? [y*.86,x*.77] : [x,y];
+  const sizePoint = (x,y) => compact() ? [y*.86,x*.77] : [x,y];
 
   const selection = new Set();
   const marquee = surface.querySelector('.marquee');
@@ -526,29 +538,27 @@ function startGraph() {
       ctx.stroke();
     }
     const coords = nodes.map(node=>point(node.x,node.y));
-    if (!board) {
-      const lookup = new Map(nodes.map((node,i)=>[node.id,coords[i]]));
-      beatNodes.slice(1).forEach((node,i)=>{
-        const start = lookup.get(beatNodes[i].id), end = lookup.get(node.id);
-        line(start,end,'#527b96',2.4);
-        const mid = [(start[0]+end[0])/2,(start[1]+end[1])/2];
-        if (!gaps.some(gap=>gap.from===beatNodes[i] && gap.to===node)) {
-          if (compact()) {
-            line([mid[0]-5,mid[1]-6],mid,'#527b96',2);
-            line([mid[0]+5,mid[1]-6],mid,'#527b96',2);
-          } else {
-            line([mid[0]-6,mid[1]-5],mid,'#527b96',2);
-            line([mid[0]-6,mid[1]+5],mid,'#527b96',2);
-          }
+    const lookup = new Map(nodes.map((node,i)=>[node.id,coords[i]]));
+    beatNodes.slice(1).forEach((node,i)=>{
+      const start = lookup.get(beatNodes[i].id), end = lookup.get(node.id);
+      line(start,end,'#527b96',2.4);
+      const mid = [(start[0]+end[0])/2,(start[1]+end[1])/2];
+      if (!gaps.some(gap=>gap.from===beatNodes[i] && gap.to===node)) {
+        if (compact()) {
+          line([mid[0]-5,mid[1]-6],mid,'#527b96',2);
+          line([mid[0]+5,mid[1]-6],mid,'#527b96',2);
+        } else {
+          line([mid[0]-6,mid[1]-5],mid,'#527b96',2);
+          line([mid[0]-6,mid[1]+5],mid,'#527b96',2);
         }
-      });
-      nodes.forEach(node=>{
-        if (node.parent) line(lookup.get(node.parent),lookup.get(node.id),node.kind==='issue' ? '#b97061' : '#9a9ba3',1.4,true);
-      });
-      p.links.forEach(([a,b])=>{
-        if (lookup.has(a) && lookup.has(b)) line(lookup.get(a),lookup.get(b),'#58809b',1.3,true);
-      });
-    }
+      }
+    });
+    nodes.forEach(node=>{
+      if (node.parent) line(lookup.get(node.parent),lookup.get(node.id),node.kind==='issue' ? '#b97061' : '#9a9ba3',1.4,true);
+    });
+    p.links.forEach(([a,b])=>{
+      if (lookup.has(a) && lookup.has(b)) line(lookup.get(a),lookup.get(b),'#58809b',1.3,true);
+    });
     gaps.forEach(gap=>{
       const center = gapPoint(gap);
       const knotCenter = point(center.x,center.y+(compact() ? -54 : 5));
@@ -651,7 +661,7 @@ function startGraph() {
     if (drag) return;
     const target = event.target.closest('[data-node]');
     const node = nodes.find(entry=>entry.id===target?.dataset.node);
-    const mode = event.button===1 ? 'pan' : knot && canvasTool==='rotate' && !node ? 'rotate' :
+    const mode = event.button===1 ? 'pan' : knot && !compact() && canvasTool==='rotate' && !node ? 'rotate' :
       node ? 'move' : event.pointerType==='touch' ? 'pan' : 'select';
     drag = {node,mode,start:point,last:point,moved:false,pointer:event.pointerId};
     if (event.pointerType!=='touch') (target || surface).setPointerCapture(event.pointerId);
@@ -688,17 +698,14 @@ function startGraph() {
     } else if (drag.mode==='move') {
       const scale = view.z*canvasLayout(surface).factor;
       const moving = selection.has(drag.node.id) ? nodes.filter(node=>selection.has(node.id)) : [drag.node];
-      const mx = !board && compact() ? dy/(scale*.77) : dx/scale;
-      const my = !board && compact() ? dx/(scale*.86) : dy/scale;
+      const mx = compact() ? dy/(scale*.77) : dx/scale;
+      const my = compact() ? dx/(scale*.86) : dy/scale;
       moving.forEach(node=>{
         node.x += mx;
         node.y += my;
-        if (board) Object.assign(node.ref,{x:node.x,y:node.y});
-        else {
-          p.nodeOffsets ??= {};
-          const offset = p.nodeOffsets[node.id] ?? {x:0,y:0};
-          p.nodeOffsets[node.id] = {x:offset.x+mx,y:offset.y+my};
-        }
+        p.nodeOffsets ??= {};
+        const offset = p.nodeOffsets[node.id] ?? {x:0,y:0};
+        p.nodeOffsets[node.id] = {x:offset.x+mx,y:offset.y+my};
       });
       draw();
     } else if (drag.mode==='pan') {
@@ -725,7 +732,7 @@ function startGraph() {
   });
   surface.addEventListener('dblclick',event => {
     const node = event.target.closest('[data-node]');
-    if (node && !board) focusNode(node.dataset.node);
+    if (node) focusNode(node.dataset.node);
   });
   surface.addEventListener('wheel',event => {
     event.preventDefault();
@@ -790,7 +797,7 @@ function nodeDetails(item) {
   const isIssue = issueFor(selected);
   const title = isIssue ? isIssue.question : item.title;
   const body = isIssue ? project().issueDescriptions?.[isIssue.id] ?? isIssue.body : item.body;
-  const header = '<span class="mono'+(isIssue ? ' issue-text' : '')+'">'+escape(isIssue ? 'Open plot hole' : item.category)+'</span><h2>'+escape(title)+'</h2>';
+  const header = '<span class="mono'+(isIssue ? ' issue-text' : '')+'">'+escape(isIssue ? 'Open plot hole' : item.category==='Unsorted' ? 'Idea' : item.category)+'</span><h2>'+escape(title)+'</h2>';
   const description = '<p class="muted node-description" tabindex="0" data-description title="Double-click to edit" aria-description="Double-click or press Enter to edit">'+escape(body || 'Add a description')+'</p>';
   const tabs = '<div class="actions">'+[['suggestions','Suggestions'],['experiment','Experiment']].map(([key,label])=>button(label,'mode:'+(key===popupMode ? 'details' : key),key===popupMode)).join('')+'</div>';
   let content;
@@ -884,7 +891,7 @@ document.addEventListener('click',event => {
       return;
     }
     case 'toggle-nav': navHidden = !navHidden; render(); return;
-    case 'tool': canvasTool = canvasTool === 'pan' ? 'rotate' : 'pan'; render(); return;
+    case 'tool': if (compact()) return; canvasTool = canvasTool === 'pan' ? 'rotate' : 'pan'; render(); return;
     case 'jump-issue': {
       const issues = openIssues(p);
       const index = issues.findIndex(issue=>issue.id===selected);
