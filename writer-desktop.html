@@ -163,34 +163,37 @@ const pages = [
   ['finalize','Finalize','Review the relationships and save a version of your story.']
 ];
 const categories = ['Plot','Characters','Events','Locations','Conflicts'];
-const initialItems = [
-  ['Mira arrives at the station','Events','Mira returns to the station before midnight. The guard tells her she needs a ticket to board.'],
-  ['Mira','Characters','A courier who has sworn never to return to the station.'],
-  ['Mira boards the last train','Events','Mira shows a pass and boards the last train.'],
-  ['The empty station','Locations','The station closes after the last departure.'],
-  ['A promise to break','Conflicts','Mira must choose between keeping her promise and finding her brother.'],
-  ['To the Moon','Events','Mira steps out of the ordinary commuter train and finds her brother waiting on the Moon in flip-flops.']
-];
-const suggestions = [
-  ['A favor from the conductor','Show Mira helping the conductor earlier. The conductor repays her by leaving a spare ticket.'],
-  ['The ticket in the letter','Have Mira discover a pass tucked into her brother’s letter before she leaves for the station.'],
-  ['A choice at the gate','Put Mira’s old rival at the gate with a spare pass. Boarding means owing them a favor.']
+const incenseItems = [
+  {id:'opening-flood',category:'Events',title:'The funeral in flood season',order:0,body:'Bà Sáu dies while the rice fields are underwater. Lộc returns from Saigon for the first time in ten years. A week after the funeral, the family hosts a new-rice offering for the hamlet.'},
+  {id:'last-wishes',category:'Events',title:'Bà Sáu’s last wishes',order:2,body:'Before the Nguyễn clan elders, the family learns that Bà Sáu left the ancestral altar and hương hỏa land to her youngest daughter, Út Hạnh. The elders nod and light incense.'},
+  {id:'shrimp-offer',category:'Events',title:'The shrimp company’s offer',order:4,body:'Lộc brings an offer from Mekong Shrimp Co. Thịnh refuses because the land funds their father’s yearly giỗ, with thirty tables and a hired band. Lộc carried their father’s coffin three years ago.'},
+  {id:'wedding',category:'Events',title:'The wedding during mourning',order:6,body:'Two months after the funeral, Thịnh’s son marries at a large wedding with red decorations and karaoke until midnight. The neighbors eat and congratulate the family.'},
+  {id:'tet',category:'Events',title:'The agreement at Tết',order:8,body:'The siblings sell half the land and keep the half with the family graves. Lộc returns to Saigon. Thịnh lights incense alone while the fields turn green for spring.'},
+  {id:'rach-sen',category:'Locations',parent:'opening-flood',title:'Rạch Sen',body:'A fictional rice-farming hamlet in the late-1990s Mekong Delta. Young workers often leave for Saigon and return for Tết and death anniversaries.'},
+  {id:'rice-fields',category:'Locations',parent:'opening-flood',title:'Rice fields and canals',body:'Families grow rice and fish the canals. The flood season puts the fields underwater from August to November.'},
+  {id:'family-money',category:'Conflicts',parent:'shrimp-offer',title:'The Nguyễn family’s debts',body:'A bad harvest forced the family to mortgage part of its land. It sold its last buffalo the previous year.'},
+  {id:'huong-hoa',category:'Conflicts',parent:'last-wishes',title:'Hương hỏa land',body:'In Rạch Sen, the eldest son normally keeps the altar and the land that funds ancestral rites. Daughters who marry join their spouse’s family.'},
+  {id:'birth-order',category:'Conflicts',parent:'last-wishes',title:'Birth-order names',body:'In the story’s Southern naming custom, the eldest is called Hai, followed by Ba and Tư. The youngest is called Út.'},
+  {id:'clan-elders',category:'Characters',parent:'last-wishes',title:'Nguyễn clan elders',body:'The clan head and elders settle disputes before the family altar. They want to keep the ancestral land within the family.'},
+  {id:'ancestor-worship',category:'Conflicts',parent:'tet',title:'Ancestor worship',body:'Households keep altars for the dead and hold a giỗ for each parent every year.'},
+  {id:'mourning',category:'Conflicts',parent:'wedding',title:'Mourning period',body:'Children may mourn a parent for up to three years. The hamlet expects no weddings, loud celebrations, or red at Tết during that time.'},
+  {id:'seasons',category:'Locations',parent:'opening-flood',title:'Flood and harvest calendar',body:'The fields flood from August through November. Rice is harvested after the water recedes in December, and again in March.'},
+  {id:'rice-offering',category:'Conflicts',parent:'opening-flood',title:'Cúng cơm mới',body:'Rạch Sen thanks its ancestors for the first harvest in the ninth lunar month, around October.'},
+  {id:'thinh',category:'Characters',parent:'last-wishes',title:'Ba Thịnh',body:'The eldest son, 46, farms the ancestral land and tends the altar. He wants to preserve his father’s arrangements and needs to consider what his siblings want.'},
+  {id:'loc',category:'Characters',parent:'shrimp-offer',title:'Tư Lộc',body:'The middle son, 40, works for the shrimp company in Saigon. He wants to clear the family’s debts by selling and wants his brother’s respect.'},
+  {id:'ba-sau',category:'Characters',parent:'opening-flood',title:'Bà Sáu',body:'The siblings’ mother dies during the autumn flood season. She appears through memories and her last wishes.'},
+  {id:'hanh',category:'Characters',parent:'last-wishes',title:'Út Hạnh',body:'The youngest daughter, 32, stayed home to care for her mother. She wants to keep the house and needs to make room for a life of her own.'},
+  {id:'shrimp-company',category:'Characters',parent:'shrimp-offer',title:'Mekong Shrimp Co.',body:'The company wants to turn rice land along the canal into shrimp ponds.'},
+  {id:'family-choice',category:'Conflicts',parent:'tet',title:'Keep the land or sell it?',body:'After their mother dies, three siblings must decide whether to keep the land that funds the family’s rituals or sell it to pay their debts.'}
 ];
 const demoIssues = [
-  {id:'issue', title:'Missing ticket setup', question:'Where did Mira get the ticket?',
-    body:'Mira boards the train with a pass that hasn’t appeared earlier in the timeline.',
-    from:'sample-0', to:'sample-2', order:1, field:'fix', beat:'Ticket setup', options:suggestions},
-  {id:'moon', title:'Missing trip to the Moon', question:'How does the train reach the Moon?',
-    body:'Mira boards a regular train on Earth. The next scene opens on the Moon. There’s no scene explaining how the train gets there.',
-    from:'sample-2', to:'sample-5', order:3, field:'moonFix', beat:'The Moon reveal',
-    options:[
-      ['The Moon is a diner','Show the train stopping at a Moon-themed diner on Earth. Mira’s brother is waiting inside.'],
-      ['The tunnel is a launch ramp','Show the tracks leading into a launch tunnel. The train lifts off and docks at a pressurized station on the Moon.'],
-      ['The train enters a dream','Show Mira falling asleep on the train. She dreams about the Moon until her brother wakes her at the station.']
-    ]}
+  {id:'loc-timeline',title:'Lộc’s return dates conflict',question:'When did Lộc last come home?',
+    body:'The opening says Lộc hasn’t been home for ten years. In the offer scene, he carried his father’s coffin in Rạch Sen three years ago.',
+    from:'opening-flood',to:'shrimp-offer',order:3,field:'locTimelineFix',beat:'Lộc’s last visit',
+    options:[['Clarify the last visit','Say this is Lộc’s first visit since his father’s funeral three years ago.'],['Keep the ten-year absence','Give the coffin scene to someone who was in Rạch Sen three years ago.']]}
 ];
-const issueFor = key => demoIssues.find(issue=>issue.id===(key===true ? 'issue' : key));
-const openIssues = p => p.demo ? demoIssues.filter(issue=>!p[issue.field] &&
+const issueFor = key => demoIssues.find(issue=>issue.id===key);
+const openIssues = p => p.sampleKey==='incense-land' ? demoIssues.filter(issue=>!p[issue.field] &&
   p.items.some(item=>item.id===issue.from) && p.items.some(item=>item.id===issue.to)) : [];
 function updateIssueFix(p,item,body) {
   const issue = issueFor(item?.fixesIssue);
@@ -199,63 +202,19 @@ function updateIssueFix(p,item,body) {
 const phone = document.documentElement.dataset.edition === 'phone';
 const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
 const id = () => globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random());
-const makeProject = (name, demo = false) => ({
-  id:id(),name,demo,fix:'',final:null,links:[],sampleStoryVersion:demo ? 4 : undefined,
-  items:demo ? initialItems.map(([title,category,body], index) => ({
-    id:'sample-'+index,title,category,body,x:[-125,105,11,-98,166,140][index],y:[-92,-72,27,108,124,38][index],file:''
-  })) : []
-});
+const makeProject = name => ({id:id(),name,final:null,links:[],items:[]});
 let state;
 try { state = JSON.parse(localStorage.getItem('unstuck-v1')); } catch {}
-if (!state?.projects?.length) state = {projects:[makeProject('The Last Train',true)]};
-if (!state.projects.some(entry => entry.sampleKey === 'observatory')) {
-  const sample = makeProject('The Quiet Observatory');
-  sample.sampleKey = 'observatory';
-  sample.items = [
-    ['The silent signal','Plot','A radio telescope picks up a signal that stops whenever someone says the astronomer’s name.'],
-    ['Noor','Characters','An astronomer who would rather lose her job than publish a false result.'],
-    ['The second transmission','Events','Noor isolates a repeating signal and records it before dawn.'],
-    ['The mountaintop dome','Locations','A remote observatory with one working radio receiver.'],
-    ['Publish or protect','Conflicts','Noor must decide whether to release a recording that identifies her colleague.']
-  ].map(([title,category,body],index)=>({id:id(),title,category,body,x:(index%3-1)*125,y:Math.floor(index/3)*100-55}));
-  state.projects.push(sample);
+if (!Array.isArray(state?.projects)) state = {projects:[]};
+const isOldSample = entry => entry.demo || entry.sampleKey==='observatory';
+const oldSamples = state.projects.filter(isOldSample);
+if (oldSamples.length) {
+  state.retiredSamples = [...(state.retiredSamples ?? []),...oldSamples];
+  state.projects = state.projects.filter(entry=>!isOldSample(entry));
 }
-state.projects.forEach(entry=>{
-  if (entry.demo && entry.sampleStoryVersion !== 3) {
-    const arrival = entry.items.find(item => item.id === 'sample-0');
-    const boarding = entry.items.find(item => item.id === 'sample-2');
-    if (arrival?.title === 'The midnight departure' && arrival.category === 'Plot' &&
-        arrival.body === 'The last train leaves at midnight. Mira needs a ticket to board.') {
-      [arrival.title,arrival.category,arrival.body] = initialItems[0];
-    }
-    if (boarding?.title === 'The stolen ticket') boarding.title = initialItems[2][0];
-    if (!entry.items.some(item=>item.id==='sample-5')) {
-      const [title,category,body] = initialItems[5];
-      entry.items.push({id:'sample-5',title,category,body,order:4,x:140,y:38});
-    }
-    const ending = entry.items.find(item=>item.id==='sample-5');
-    if (ending?.title==='Mira finds her brother' && ending.body==='At the final stop, Mira finds her brother waiting on the platform.') {
-      [ending.title,ending.category,ending.body] = initialItems[5];
-    }
-    entry.sampleStoryVersion = 3;
-  }
-  if (entry.demo && entry.sampleStoryVersion === 3) {
-    const middle = entry.items.find(item=>!item.alternate && item.title.trim().toLowerCase()==='mira fell ill' && item.category==='Events');
-    const ending = entry.items.find(item=>item.id==='sample-5');
-    if (middle) {
-      middle.title = 'To the Moon';
-      middle.moonArrival = true;
-      if (!middle.body?.trim()) middle.body = 'The train’s destination display suddenly reads “The Moon.”';
-    } else if (ending?.title==='Mira finds her brother on the Moon') {
-      ending.title = 'To the Moon';
-    }
-    entry.sampleStoryVersion = 4;
-  }
-  if (entry.branches?.length) {
-    entry.items.push(...entry.branches.map(branch=>({...branch,category:'Plot',alternate:true,x:0,y:0})));
-    delete entry.branches;
-  }
-});
+if (!state.projects.some(entry=>entry.sampleKey==='incense-land')) {
+  state.projects.unshift({...makeProject('The Incense Land'),sampleKey:'incense-land',items:incenseItems.map(item=>({...item}))});
+}
 let activeId;
 try { activeId = sessionStorage.getItem('unstuck-active'); } catch {}
 const project = () => state.projects.find(item => item.id === activeId);
@@ -406,7 +365,7 @@ function render() {
       button('Close','close-popup')+'<section class="panel popup-body" id="inspector"></section>'+resizeGrip+'</section>'+
       '<div class="canvas-hint" id="canvasHint" aria-live="polite" data-default="'+status+'">'+status+'</div>'+
       '<div class="canvas-tools" role="toolbar" aria-label="'+title+' tools">'+primary+tools+button('−','out')+'<span class="status" id="zoom"></span>'+button('+','in')+button('Reset','reset')+'</div>';
-    if (p.demo) {
+    if (p.sampleKey==='incense-land') {
       content += '<div class="analysis-badge">'+(knot ? button(issues.length+' plot hole'+(issues.length===1 ? '' : 's'),'jump-issue',true) :
         '<span class="status">Plot holes resolved</span>'+button('Replay knots','replay-knot'))+'</div>';
     }
@@ -414,7 +373,7 @@ function render() {
       content += '<div class="panel canvas-empty"><h2>Start your timeline</h2><p>Add a story beat or collect rough ideas first.</p><div class="actions">'+button('+ Beat','add:Events',true)+button('+ Idea','note')+'</div></div>';
     }
   } else if (page === 'projects') {
-    content = heading(title,description,button('+ Project','new-project',true))+'<div class="cards project-cards">'+state.projects.map(entry => card(entry.name,entry.items.length+' story notes',button('Open project','open:'+entry.id,true)+button('Rename','rename:'+entry.id),entry.demo || entry.sampleKey ? 'Sample story' : '')).join('')+'</div>';
+    content = heading(title,description,button('+ Project','new-project',true))+'<div class="cards project-cards">'+state.projects.map(entry => card(entry.name,entry.items.length+' story notes',button('Open project','open:'+entry.id,true)+button('Rename','rename:'+entry.id),entry.sampleKey ? 'Sample story' : '')).join('')+'</div>';
   } else if (page === 'organize') {
     const groups = [...categories,'Unsorted'].map(category => {
       const items = p.items.filter(item=>item.category===category);
@@ -426,7 +385,7 @@ function render() {
   } else {
     content = heading(title,description,button('Review map','go:map')+button('Save version','final',true))+'<div class="cards">'+
       card('Story outline', categories.map(category=>category+' · '+p.items.filter(item=>item.category===category).length).join('\n'))+
-      card('Story relationships',p.links.length+' custom connections\n'+(p.demo ? (openIssues(p).length ? openIssues(p).length+' plot hole(s) to review.' : 'Sample plot holes resolved.') : 'Review the narrative map.'))+
+      card('Story relationships',p.links.length+' custom connections\n'+(p.sampleKey==='incense-land' ? (openIssues(p).length ? openIssues(p).length+' plot hole(s) to review.' : 'Sample plot holes resolved.') : 'Review the narrative map.'))+
       card('Saved version',p.final ? p.final.date+'\n'+p.final.items.length+' notes captured' : 'No saved version yet.',p.final ? button('Download snapshot','download') : '')+'</div>';
   }
   $('#screen').innerHTML = content;
@@ -437,7 +396,7 @@ function render() {
   } else applyPopupSize();
 }
 function beatOrder(item,p) {
-  return item.order ?? (item.id==='sample-2' ? 2 : item.id==='sample-5' ? 4 : p.items.indexOf(item)*2);
+  return item.order ?? p.items.indexOf(item)*2;
 }
 function startGraph() {
   const surface = $('#surface');
@@ -453,8 +412,7 @@ function startGraph() {
     kind:'beat',x:i*280-280,y:0
   }));
   const gaps = issues.map(issue=>{
-    const target = issue.id==='moon' ? beats.find(item=>item.moonArrival)?.id ?? issue.to : issue.to;
-    const index = beatNodes.findIndex(beat=>beat.id===target);
+    const index = beatNodes.findIndex(beat=>beat.id===issue.to);
     const from = beatNodes[index-1];
     const to = beatNodes[index];
     return from && to ? {issue,from,to} : null;
@@ -472,13 +430,13 @@ function startGraph() {
       y:compact() ? (index%2 ? 105 : -105) : 218+Math.floor(index/3)*110
     })),
     ...flags.map(item=>{
-      const parentId = item.parent || (item.id==='sample-3' ? 'sample-2' : '');
+      const parentId = item.parent;
       const parent = beatNodes.find(beat=>beat.id===parentId) || beatNodes[0];
       const index = flagCounts[parent.id] || 0;
       flagCounts[parent.id] = index+1;
       const labels = {Characters:'Character',Locations:'Location',Conflicts:'⚑ Conflict'};
       return {id:item.id,title:item.title,label:item.alternate ? 'Alternate branch' : labels[item.category] || item.category,
-        kind:item.alternate ? 'alternate' : 'flag',parent:parent.id,x:parent.x+(index<2 ? 0 : (index-1)*120),y:(index%2 ? 1 : -1)*112};
+        kind:item.alternate ? 'alternate' : 'flag',parent:parent.id,x:parent.x+(index<2 ? 0 : (index%4<2 ? -105 : 105)),y:(index%2 ? 1 : -1)*(112+Math.floor(index/2)*80)};
     }),
     ...gaps.map(gap=>{
       const center = gapPoint(gap);
@@ -830,12 +788,7 @@ function insertOption(title,body,alternate,placement = 1) {
   const base = p.items.find(item=>item.id===parent);
   const entry = {id:id(),title,body,category:isIssue ? 'Events' : 'Plot',parent,alternate,fixesIssue:isIssue?.id,
     x:(base?.x ?? 0)+130,y:(base?.y ?? 0)+55};
-  if (isIssue?.id==='moon') {
-    const beats = p.items.filter(item=>item!==entry && !item.alternate && ['Plot','Events'].includes(item.category))
-      .sort((a,b)=>beatOrder(a,p)-beatOrder(b,p));
-    const target = beats.findIndex(item=>item.id===(beats.find(note=>note.moonArrival)?.id ?? isIssue.to));
-    entry.order = target>0 ? (beatOrder(beats[target-1],p)+beatOrder(beats[target],p))/2 : isIssue.order;
-  } else if (isIssue) entry.order = isIssue.order;
+  if (isIssue) entry.order = isIssue.order;
   else if (base) entry.order = beatOrder(base,p)+placement*.5;
   p.items.push(entry);
   if (!alternate && isIssue) {
@@ -958,7 +911,7 @@ document.addEventListener('click',event => {
       return;
     }
     case 'final':
-      p.final = {name:p.name,date:new Date().toLocaleString(),items:p.items.map(({title,category,body,file})=>({title,category,body,file})),fix:p.fix,moonFix:p.moonFix,links:p.links.map(link=>link.map(noteId=>p.items.find(note=>note.id===noteId)?.title))};
+      p.final = {name:p.name,date:new Date().toLocaleString(),items:p.items.map(({title,category,body,file})=>({title,category,body,file})),plotHoleFixes:Object.fromEntries(demoIssues.filter(issue=>p[issue.field]).map(issue=>[issue.id,p[issue.field]])),links:p.links.map(link=>link.map(noteId=>p.items.find(note=>note.id===noteId)?.title))};
       notify('Version saved.'); break;
     case 'download': {
       const url = URL.createObjectURL(new Blob([JSON.stringify(p.final,null,2)],{type:'application/json'}));

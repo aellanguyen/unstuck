@@ -15,4 +15,4 @@ cd unstuck
 
 Open [index.html](index.html) in a browser. You can also open [the desktop view](writer-desktop.html) or [the phone view](writer-phone.html) directly. The prototype runs without a build or server.
 
-Open **The Last Train** and select a red plot-hole node. Under **Suggestions**, choose **Add node** to put a missing beat on the timeline and clear that knot. Analysis and suggestions use sample data. Project edits are stored in the browser.
+Open **The Incense Land** and select a red plot-hole node. Under **Suggestions**, choose **Add node** to put a missing beat on the timeline and clear that knot. Analysis and suggestions use sample data. Project edits are stored in the browser.
